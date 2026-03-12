@@ -1,0 +1,453 @@
+[
+  {
+    "title": "Database CPU at 100%",
+    "description": "Production database is melting.",
+    "options": [
+      { "text": "Investigate logs", "effects": { "uptime": 2, "morale": 3, "cloud_cost": -2 } },
+      { "text": "Restart the database", "effects": { "uptime": 6, "reputation": -5 } },
+      { "text": "Scale database cluster", "effects": { "uptime": 4, "cloud_cost": 10 } }
+    ]
+  },
+  {
+    "title": "Bug only happens in production",
+    "description": "Developer says: 'Works perfectly on my machine.'",
+    "options": [
+      { "text": "Rollback", "effects": { "uptime": 4, "morale": 3, "reputation": -5 } },
+      { "text": "Deploy debug logs", "effects": { "uptime": 2, "cloud_cost": 6 } },
+      { "text": "Reproduce locally", "effects": { "morale": -8 } }
+    ]
+  },
+  {
+    "title": "CEO promised AI",
+    "description": "CEO promised an AI feature to a client tomorrow.",
+    "options": [
+      { "text": "Rename cron job to AI service", "effects": { "morale": 3, "reputation": 5 } },
+      { "text": "Build quick AI prototype", "effects": { "uptime": 2, "morale": -12, "cloud_cost": 8 } },
+      { "text": "Explain it's impossible", "effects": { "morale": 8, "reputation": -25 } }
+    ]
+  },
+  {
+    "title": "Junior pushed to main",
+    "description": "A junior dev pushed directly to main at 17:59.",
+    "options": [
+      { "text": "Ask what changed", "effects": { "uptime": -8, "morale": -3, "reputation": -5 } },
+      { "text": "Wait and see", "effects": { "uptime": -25, "morale": -8, "reputation": -10 } },
+      { "text": "Rollback immediately", "effects": { "uptime": 8, "morale": -5, "reputation": -5 } }
+    ]
+  },
+  {
+    "title": "Memory leak discovered",
+    "description": "One service slowly eats all RAM.",
+    "options": [
+      { "text": "Add more servers", "effects": { "uptime": 2, "cloud_cost": 12, "reputation": -5 } },
+      { "text": "Investigate root cause", "effects": { "uptime": 4, "morale": 8, "cloud_cost": 5 } },
+      { "text": "Restart service hourly", "effects": { "uptime": 2, "morale": -8, "reputation": -5 } }
+    ]
+  },
+  {
+    "title": "Kubernetes issue",
+    "description": "Nobody understands what Kubernetes is doing.",
+    "options": [
+      { "text": "Call DevOps", "effects": { "uptime": 2, "cloud_cost": 3 } },
+      { "text": "Blame Kubernetes", "effects": { "uptime": -12, "morale": 8, "reputation": -5 } },
+      { "text": "Restart pods", "effects": { "uptime": 4, "cloud_cost": -2 } }
+    ]
+  },
+  {
+    "title": "Investor demo tomorrow",
+    "description": "Investors want to see a flawless demo.",
+    "options": [
+      { "text": "Fake demo data", "effects": { "morale": 3, "reputation": 5 } },
+      { "text": "Deploy new feature", "effects": { "uptime": -20, "morale": -12, "reputation": 10 } },
+      { "text": "Freeze all deployments", "effects": { "uptime": 4, "morale": 3 } }
+    ]
+  },
+  {
+    "title": "Redis eviction chaos",
+    "description": "Redis starts evicting everything.",
+    "options": [
+      { "text": "Ignore temporarily", "effects": { "uptime": -20, "morale": -8, "reputation": -10 } },
+      { "text": "Restart Redis", "effects": { "uptime": 4, "morale": -3, "reputation": -5 } },
+      { "text": "Increase memory", "effects": { "uptime": 2, "cloud_cost": 10 } }
+    ]
+  },
+  {
+    "title": "Slack panic",
+    "description": "#production-down channel exploding.",
+    "options": [
+      { "text": "Let team handle it", "effects": { "uptime": -12, "morale": 3, "reputation": -8 } },
+      { "text": "Panic", "effects": { "uptime": -5, "morale": -20, "reputation": -10 } },
+      { "text": "Join incident call", "effects": { "uptime": 2, "morale": 8 } }
+    ]
+  },
+  {
+    "title": "Security alert",
+    "description": "Automated system flagged suspicious activity.",
+    "options": [
+      { "text": "Ignore warning", "effects": { "uptime": -12, "morale": -12, "reputation": -25 } },
+      { "text": "Block IPs", "effects": { "uptime": 2, "reputation": 5, "cloud_cost": 3 } },
+      { "text": "Investigate deeply", "effects": { "uptime": -5, "morale": -5, "reputation": 10 } }
+    ]
+  },
+  {
+    "title": "API latency spike",
+    "description": "Customers report slow APIs.",
+    "options": [
+      { "text": "Optimize queries", "effects": { "uptime": 2, "morale": 5, "cloud_cost": -5 } },
+      { "text": "Tell customers it's temporary", "effects": { "reputation": -20 } },
+      { "text": "Add servers", "effects": { "uptime": 4, "cloud_cost": 12 } }
+    ]
+  },
+  {
+    "title": "Developer burnout",
+    "description": "Senior engineer looks exhausted.",
+    "options": [
+      { "text": "Hire contractor", "effects": { "morale": 3, "cloud_cost": 10 } },
+      { "text": "Give them time off", "effects": { "uptime": -3, "morale": 12 } },
+      { "text": "Push through sprint", "effects": { "uptime": -3, "morale": -25 } }
+    ]
+  },
+  {
+    "title": "Legacy code discovered",
+    "description": "A service written in 2013 without tests.",
+    "options": [
+      { "text": "Leave it alone", "effects": { "uptime": -18, "morale": 3, "reputation": -8 } },
+      { "text": "Refactor carefully", "effects": { "uptime": 2, "morale": 5, "cloud_cost": 5 } },
+      { "text": "Rewrite service", "effects": { "uptime": -8, "morale": 8, "cloud_cost": 15 } }
+    ]
+  },
+  {
+    "title": "Monitoring broken",
+    "description": "Your monitoring system is down.",
+    "options": [
+      { "text": "Hope nothing breaks", "effects": { "uptime": -18, "morale": -12, "reputation": -10 } },
+      { "text": "Deploy new monitoring", "effects": { "morale": 3, "cloud_cost": 12, "reputation": -5 } },
+      { "text": "Fix monitoring", "effects": { "uptime": 4, "morale": -5, "cloud_cost": 5 } }
+    ]
+  },
+  {
+    "title": "Customer complaint",
+    "description": "Big client reports bugs.",
+    "options": [
+      { "text": "Schedule next sprint", "effects": { "reputation": -20 } },
+      { "text": "Fix immediately", "effects": { "uptime": -5, "morale": -5, "reputation": 10 } },
+      { "text": "Explain roadmap", "effects": { "morale": 3, "reputation": 5 } }
+    ]
+  },
+  {
+    "title": "Dev wants new framework",
+    "description": "A developer wants to rewrite everything.",
+    "options": [
+      { "text": "Create architecture committee", "effects": { "morale": -8, "cloud_cost": 5 } },
+      { "text": "Approve experiment", "effects": { "uptime": -5, "morale": 10 } },
+      { "text": "Reject idea", "effects": { "morale": -12 } }
+    ]
+  },
+  {
+    "title": "Unexpected traffic spike",
+    "description": "Traffic increased 10x suddenly.",
+    "options": [
+      { "text": "Rate limit users", "effects": { "uptime": 2, "morale": -8, "reputation": -18 } },
+      { "text": "Enable caching", "effects": { "uptime": 4, "morale": 3, "cloud_cost": -5 } },
+      { "text": "Scale servers", "effects": { "uptime": 4, "cloud_cost": 15 } }
+    ]
+  },
+  {
+    "title": "Database migration",
+    "description": "Team proposes migrating database.",
+    "options": [
+      { "text": "Create task force", "effects": { "morale": -8, "cloud_cost": 6 } },
+      { "text": "Approve migration", "effects": { "uptime": -18, "morale": 8, "cloud_cost": 8, "reputation": 5 } },
+      { "text": "Delay decision", "effects": { "uptime": -5, "morale": -12 } }
+    ]
+  },
+  {
+    "title": "Pager alert at night",
+    "description": "Pager goes off at 3am.",
+    "options": [
+      { "text": "Wake DevOps", "effects": { "uptime": 3, "morale": -3, "cloud_cost": 3 } },
+      { "text": "Silence alert", "effects": { "uptime": -22, "morale": -15, "reputation": -10 } },
+      { "text": "Fix immediately", "effects": { "uptime": 10, "morale": -8, "reputation": 8 } }
+    ]
+  },
+  {
+    "title": "Feature creep",
+    "description": "Product manager adds more features.",
+    "options": [
+      { "text": "Compromise", "effects": { "uptime": -3, "morale": -5, "reputation": -3 } },
+      { "text": "Accept scope", "effects": { "uptime": -5, "morale": -18, "reputation": -5 } },
+      { "text": "Push back", "effects": { "morale": 12, "reputation": 5 } }
+    ]
+  },
+  {
+    "title": "Cloud bill shock",
+    "description": "Cloud provider bill doubled.",
+    "options": [
+      { "text": "Reduce servers", "effects": { "uptime": -18, "morale": -8, "cloud_cost": -8 } },
+      { "text": "Optimize infrastructure", "effects": { "morale": 5, "cloud_cost": -15 } },
+      { "text": "Ignore for now", "effects": { "cloud_cost": 15, "reputation": -8 } }
+    ]
+  },
+  {
+    "title": "Broken deployment pipeline",
+    "description": "CI/CD pipeline fails.",
+    "options": [
+      { "text": "Manual deploy", "effects": { "uptime": 2, "morale": -8, "reputation": -10 } },
+      { "text": "Fix pipeline", "effects": { "uptime": 3, "morale": -5, "cloud_cost": 5 } },
+      { "text": "Delay deploy", "effects": { "morale": 3, "reputation": -15 } }
+    ]
+  },
+  {
+    "title": "New CTO podcast idea",
+    "description": "Marketing wants you on a podcast.",
+    "options": [
+      { "text": "Delegate engineer", "effects": { "uptime": -3, "morale": 8, "reputation": 3 } },
+      { "text": "Decline", "effects": { "morale": 5, "reputation": -8 } },
+      { "text": "Agree", "effects": { "uptime": -3, "morale": -3, "reputation": 10 } }
+    ]
+  },
+  {
+    "title": "Friday 16:59 deploy",
+    "description": "Developer wants to deploy a small fix before the weekend.",
+    "options": [
+      { "text": "YOLO deploy", "effects": { "uptime": -40, "morale": -28, "reputation": 8 } },
+      { "text": "Wait until Monday", "effects": { "morale": 12, "reputation": 5 } },
+      { "text": "Deploy hotfix only", "effects": { "uptime": -10 } },
+      { "text": "Deploy anyway", "effects": { "uptime": -28, "morale": -18, "reputation": 5 } }
+    ]
+  },
+  {
+    "title": "Mysterious bug",
+    "description": "Bug disappears when debugging.",
+    "options": [
+      { "text": "Add retry logic", "effects": { "uptime": 2, "morale": 3, "cloud_cost": 4 } },
+      { "text": "Close ticket", "effects": { "uptime": -5, "morale": -8, "reputation": -15 } },
+      { "text": "Investigate further", "effects": { "morale": 5 } }
+    ]
+  },
+  {
+    "title": "GDPR Compliance Request",
+    "description": "An enterprise client demands full GDPR compliance documentation by end of week.",
+    "options": [
+      { "text": "Send existing partial docs", "effects": { "morale": -3, "reputation": -10 } },
+      { "text": "Audit everything properly", "effects": { "uptime": -5, "morale": -8, "cloud_cost": 5, "reputation": 12 } },
+      { "text": "Delay and promise it next week", "effects": { "reputation": -18, "morale": 3 } }
+    ]
+  },
+  {
+    "title": "Key Engineer Has an Offer",
+    "description": "Your best backend engineer just got a competing offer. They are giving you a chance to match it.",
+    "options": [
+      { "text": "Counter with more equity", "effects": { "morale": 5, "reputation": 3 } },
+      { "text": "Let them go", "effects": { "uptime": -10, "morale": -18, "reputation": -8 } },
+      { "text": "Match the offer", "effects": { "morale": 12, "cloud_cost": 8, "reputation": 5 } }
+    ]
+  },
+  {
+    "title": "Competitor Launches Same Product",
+    "description": "A well-funded competitor just launched almost exactly what you built.",
+    "options": [
+      { "text": "Panic and call an all-hands", "effects": { "uptime": -5, "morale": -15, "reputation": -10 } },
+      { "text": "Double down on your strengths", "effects": { "morale": 5, "reputation": 8 } },
+      { "text": "Accelerate your roadmap", "effects": { "uptime": -8, "morale": -10, "cloud_cost": 8 } }
+    ]
+  },
+  {
+    "title": "Developer Tweets About Tech Debt",
+    "description": "A developer just publicly tweeted about your codebase. It is going viral in dev circles.",
+    "options": [
+      { "text": "Ignore it and hope it dies down", "effects": { "reputation": -18, "morale": -5 } },
+      { "text": "Address it publicly and honestly", "effects": { "morale": 8, "reputation": -5 } },
+      { "text": "Ask them to delete the tweet", "effects": { "morale": -15, "reputation": -10 } }
+    ]
+  },
+  {
+    "title": "Board Demands Blockchain",
+    "description": "The board saw a presentation and now wants blockchain integrated into the product by Q2.",
+    "options": [
+      { "text": "Agree and figure it out later", "effects": { "uptime": -5, "morale": -15, "reputation": 5 } },
+      { "text": "Explain why it does not fit", "effects": { "morale": 10, "reputation": -12 } },
+      { "text": "Create an exploratory task force", "effects": { "morale": -8, "cloud_cost": 8, "reputation": -5 } }
+    ]
+  },
+  {
+    "title": "QA Team Quits Before Release",
+    "description": "Your entire QA team resigned this morning. Release is scheduled for tomorrow.",
+    "options": [
+      { "text": "Get engineers to test manually", "effects": { "uptime": -5, "morale": -12, "cloud_cost": 5 } },
+      { "text": "Delay the release", "effects": { "morale": 5, "reputation": -12 } },
+      { "text": "Ship and monitor closely", "effects": { "uptime": -15, "morale": -8, "reputation": -5 } }
+    ]
+  },
+  {
+    "title": "Staging Environment Missing",
+    "description": "A junior dev just asked where the staging environment is. There isn't one.",
+    "options": [
+      { "text": "Use production carefully", "effects": { "uptime": -12, "morale": -8, "reputation": -8 } },
+      { "text": "Add it to the backlog", "effects": { "morale": -10, "reputation": -5 } },
+      { "text": "Build one properly", "effects": { "uptime": 5, "morale": 8, "cloud_cost": 12 } }
+    ]
+  },
+  {
+    "title": "CEO Wants a Mobile App",
+    "description": "The CEO just promised a client a mobile app. By next week.",
+    "options": [
+      { "text": "Show existing mobile web as the app", "effects": { "morale": 5, "reputation": -8 } },
+      { "text": "Build a quick wrapper", "effects": { "uptime": -5, "morale": -12, "cloud_cost": 8 } },
+      { "text": "Explain the timeline reality", "effects": { "morale": 8, "reputation": -15 } }
+    ]
+  },
+  {
+    "title": "Tech Debt Sprint Cancelled Again",
+    "description": "The tech debt sprint has been pushed for the fourth time. The team is losing faith.",
+    "options": [
+      { "text": "Push it one more sprint", "effects": { "morale": -18, "uptime": -5 } },
+      { "text": "Allocate 20% time instead", "effects": { "morale": 5, "uptime": 2, "reputation": 3 } },
+      { "text": "Protect the sprint this time", "effects": { "uptime": 5, "morale": 12, "reputation": -5 } }
+    ]
+  },
+  {
+    "title": "Accidental Data Exposure",
+    "description": "A misconfigured bucket exposed customer data for an unknown period of time.",
+    "options": [
+      { "text": "Quietly fix and hope nobody noticed", "effects": { "uptime": 3, "reputation": -25, "morale": -10 } },
+      { "text": "Disclose immediately", "effects": { "uptime": -5, "morale": -5, "reputation": -15 } },
+      { "text": "Investigate scope before disclosing", "effects": { "uptime": -8, "morale": -8, "reputation": -8 } }
+    ]
+  },
+  {
+    "title": "Secrets Pushed to GitHub",
+    "description": "A developer accidentally committed API keys and database passwords to a public repo.",
+    "options": [
+      { "text": "Make the repo private and move on", "effects": { "reputation": -20, "morale": -8 } },
+      { "text": "Rotate all credentials immediately", "effects": { "uptime": -10, "morale": -8, "cloud_cost": 5, "reputation": 5 } },
+      { "text": "Delete the commit and hope", "effects": { "uptime": -5, "reputation": -15, "morale": -5 } }
+    ]
+  },
+  {
+    "title": "Office Internet Down",
+    "description": "The office internet is down during an active production incident.",
+    "options": [
+      { "text": "Wait for internet to come back", "effects": { "uptime": -20, "reputation": -12 } },
+      { "text": "Everyone on mobile hotspots", "effects": { "uptime": 5, "morale": -8, "cloud_cost": 3 } },
+      { "text": "Move to a nearby cafe", "effects": { "uptime": 3, "morale": 5, "reputation": -5 } }
+    ]
+  },
+  {
+    "title": "Public Slack Argument",
+    "description": "Two senior engineers are having a very public argument in #general about tabs vs spaces.",
+    "options": [
+      { "text": "Make a joke and move on", "effects": { "morale": 5, "reputation": -5 } },
+      { "text": "Mediate and set a standard", "effects": { "uptime": -3, "morale": 8, "reputation": 3 } },
+      { "text": "Stay out of it", "effects": { "morale": -10, "uptime": -3 } }
+    ]
+  },
+  {
+    "title": "Engineers Booked for Client Calls",
+    "description": "The product manager scheduled your three best engineers for client calls all day.",
+    "options": [
+      { "text": "Let it happen this once", "effects": { "uptime": -8, "morale": -10 } },
+      { "text": "Set a policy going forward", "effects": { "morale": 8, "uptime": -3, "reputation": 3 } },
+      { "text": "Cancel the calls", "effects": { "morale": 10, "reputation": -12 } }
+    ]
+  },
+  {
+    "title": "Vendor API Goes Down",
+    "description": "A critical third party API your product depends on just went offline with no ETA.",
+    "options": [
+      { "text": "Wait and monitor their status page", "effects": { "uptime": -18, "morale": 3, "reputation": -8 } },
+      { "text": "Build a quick fallback", "effects": { "uptime": 5, "morale": -8, "cloud_cost": 8 } },
+      { "text": "Display a maintenance page", "effects": { "uptime": -10, "reputation": -10 } }
+    ]
+  },
+  {
+    "title": "Engineer Requests 4 Day Week",
+    "description": "A senior engineer formally requests a permanent 4 day work week.",
+    "options": [
+      { "text": "Decline", "effects": { "morale": -18, "reputation": -5 } },
+      { "text": "Approve it", "effects": { "morale": 15, "uptime": -5, "reputation": 5 } },
+      { "text": "Offer a trial period", "effects": { "morale": 8, "uptime": -3 } }
+    ]
+  },
+  {
+    "title": "Competitor Poaches Your Best Engineer",
+    "description": "Your most experienced engineer just accepted an offer from your main competitor.",
+    "options": [
+      { "text": "Ask them to reconsider", "effects": { "morale": -5, "reputation": -5 } },
+      { "text": "Wish them well and move on", "effects": { "uptime": -8, "morale": 8, "reputation": 8 } },
+      { "text": "Conduct a knowledge transfer", "effects": { "uptime": -5, "morale": -8, "reputation": 5 } }
+    ]
+  },
+  {
+    "title": "Investor Due Diligence",
+    "description": "Investors want a full technical due diligence report by Friday.",
+    "options": [
+      { "text": "Delegate to a senior engineer", "effects": { "morale": -8, "reputation": 8, "uptime": -3 } },
+      { "text": "Write it thoroughly", "effects": { "uptime": -8, "morale": -10, "reputation": 15 } },
+      { "text": "Reuse existing documentation", "effects": { "morale": -3, "reputation": 5 } }
+    ]
+  },
+  {
+    "title": "Deployed to Wrong Environment",
+    "description": "Someone just deployed a half-finished feature directly to production instead of staging.",
+    "options": [
+      { "text": "Ship it and call it a surprise release", "effects": { "uptime": -15, "morale": 5, "reputation": -12 } },
+      { "text": "Feature flag it off", "effects": { "uptime": 5, "morale": -3, "cloud_cost": 3 } },
+      { "text": "Rollback immediately", "effects": { "uptime": 8, "morale": -5, "reputation": -5 } }
+    ]
+  },
+  {
+    "title": "Performance Reviews During Outage",
+    "description": "Annual performance reviews are due today. Production is also down.",
+    "options": [
+      { "text": "Split the team", "effects": { "uptime": -5, "morale": -10, "reputation": -5 } },
+      { "text": "Fix production first", "effects": { "uptime": 8, "morale": -8, "reputation": 5 } },
+      { "text": "Postpone reviews", "effects": { "uptime": 5, "morale": 5, "reputation": -8 } }
+    ]
+  },
+  {
+    "title": "New Hire Breaks Production",
+    "description": "Your new hire just broke production on their first day. The team is watching how you react.",
+    "options": [
+      { "text": "Fix it quietly", "effects": { "uptime": 5, "morale": 3, "reputation": -3 } },
+      { "text": "Support them publicly", "effects": { "uptime": -5, "morale": 15, "reputation": -5 } },
+      { "text": "Make an example of the situation", "effects": { "uptime": 3, "morale": -20, "reputation": -8 } }
+    ]
+  },
+  {
+    "title": "Sales Promises 99.99% SLA",
+    "description": "Sales just signed a contract guaranteeing 99.99% uptime. Nobody asked engineering.",
+    "options": [
+      { "text": "Tell sales to renegotiate", "effects": { "morale": 8, "reputation": -12 } },
+      { "text": "Build toward it properly", "effects": { "uptime": 5, "morale": -8, "cloud_cost": 15 } },
+      { "text": "Quietly accept and hope for the best", "effects": { "uptime": -8, "morale": -8, "reputation": -5 } }
+    ]
+  },
+  {
+    "title": "Developer Deletes Production Database",
+    "description": "A developer ran a migration script on production instead of staging. The database is gone.",
+    "options": [
+      { "text": "Check when last backup was taken", "effects": { "uptime": -20, "morale": -5, "reputation": -15 } },
+      { "text": "Pray there is a backup", "effects": { "uptime": -30, "morale": -15, "reputation": -20 } },
+      { "text": "Restore from backup", "effects": { "uptime": -15, "morale": -8, "reputation": -10 } }
+    ]
+  },
+  {
+    "title": "On-Call Gap Discovered",
+    "description": "Nobody is on call this weekend. Nobody has been for three weeks.",
+    "options": [
+      { "text": "Hope nothing breaks this weekend", "effects": { "uptime": -18, "morale": -5, "reputation": -10 } },
+      { "text": "Volunteer yourself", "effects": { "uptime": 8, "morale": 5, "reputation": 5 } },
+      { "text": "Set up a proper rotation", "effects": { "uptime": 5, "morale": -8, "cloud_cost": 3 } }
+    ]
+  },
+  {
+    "title": "Viral Reddit Post",
+    "description": "A Reddit post calling your product unreliable has 2000 upvotes and is climbing.",
+    "options": [
+      { "text": "Fix the issues first then respond", "effects": { "uptime": 5, "morale": -8, "reputation": -5 } },
+      { "text": "Ignore it", "effects": { "reputation": -22, "morale": -5 } },
+      { "text": "Respond publicly and transparently", "effects": { "uptime": -3, "morale": -5, "reputation": 12 } }
+    ]
+  }
+]

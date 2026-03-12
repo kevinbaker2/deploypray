@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --card-border: #21262d;
+  --btn: #1c2128;
+  --btn-border: #30363d;
+  --btn-hover: #262c36;
+  --green: #3fb950;
+  --yellow: #d29922;
+  --red: #f85149;
+  --cyan: #58a6ff;
+  --orange: #d18616;
+  --text: #c9d1d9;
+  --text-dim: #6e7681;
+  --text-bright: #e6edf3;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--btn-border) var(--bg);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(63, 185, 80, 0); }
+  50% { box-shadow: 0 0 12px 2px rgba(63, 185, 80, 0.15); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.4s ease-out both;
+}

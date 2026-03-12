@@ -1,0 +1,403 @@
+[
+  {
+    "incident": "Database CPU at 100%",
+    "comments": [
+      { "option": "Restart the database", "member": "Aleksandar", "comment": "Fastest fix. Root cause still unknown." },
+      { "option": "Scale database cluster", "member": "Marija", "comment": "The cloud provider will love this solution." },
+      { "option": "Investigate logs", "member": "Petar", "comment": "Correct solution… if we had time." }
+    ]
+  },
+  {
+    "incident": "Bug only happens in production",
+    "comments": [
+      { "option": "Deploy debug logs", "member": "Marija", "comment": "Production debugging… the finest debugging." },
+      { "option": "Reproduce locally", "member": "Aleksandar", "comment": "If it reproduces locally, it stops being a production bug." },
+      { "option": "Rollback", "member": "Petar", "comment": "Rollback is the closest thing we have to time travel." }
+    ]
+  },
+  {
+    "incident": "CEO promised AI",
+    "comments": [
+      { "option": "Build quick AI prototype", "member": "Petar", "comment": "Define 'AI'. A decision tree can be AI." },
+      { "option": "Explain it's impossible", "member": "Marija", "comment": "Technically correct. Politically dangerous." },
+      { "option": "Rename cron job to AI service", "member": "Aleksandar", "comment": "Honestly… this might work." }
+    ]
+  },
+  {
+    "incident": "Junior pushed to main",
+    "comments": [
+      { "option": "Rollback immediately", "member": "Marija", "comment": "Rollback first. Ask questions later." },
+      { "option": "Ask what changed", "member": "Petar", "comment": "Prepare for the answer: 'just one small thing.'" },
+      { "option": "Wait and see", "member": "Aleksandar", "comment": "Bold strategy." }
+    ]
+  },
+  {
+    "incident": "Memory leak discovered",
+    "comments": [
+      { "option": "Restart service hourly", "member": "Petar", "comment": "Classic workaround." },
+      { "option": "Investigate root cause", "member": "Aleksandar", "comment": "Proper engineering solution." },
+      { "option": "Add more servers", "member": "Marija", "comment": "Cloud scaling solves many problems… temporarily." }
+    ]
+  },
+  {
+    "incident": "Kubernetes issue",
+    "comments": [
+      { "option": "Restart pods", "member": "Aleksandar", "comment": "The Kubernetes equivalent of turning it off and on." },
+      { "option": "Blame Kubernetes", "member": "Petar", "comment": "Statistically safe." },
+      { "option": "Call DevOps", "member": "Marija", "comment": "DevOps will also restart the pods." }
+    ]
+  },
+  {
+    "incident": "Investor demo tomorrow",
+    "comments": [
+      { "option": "Freeze all deployments", "member": "Marija", "comment": "The safest deploy is no deploy." },
+      { "option": "Deploy new feature", "member": "Petar", "comment": "High risk, high excitement." },
+      { "option": "Fake demo data", "member": "Aleksandar", "comment": "The most stable infrastructure is PowerPoint." }
+    ]
+  },
+  {
+    "incident": "Redis eviction chaos",
+    "comments": [
+      { "option": "Increase memory", "member": "Aleksandar", "comment": "Hardware solution." },
+      { "option": "Restart Redis", "member": "Marija", "comment": "Short-term relief." },
+      { "option": "Ignore temporarily", "member": "Petar", "comment": "Optimistic approach." }
+    ]
+  },
+  {
+    "incident": "Slack panic",
+    "comments": [
+      { "option": "Join incident call", "member": "Marija", "comment": "Slack panic is rarely proportional to the problem." },
+      { "option": "Let team handle it", "member": "Petar", "comment": "Trust is good leadership." },
+      { "option": "Panic", "member": "Aleksandar", "comment": "This option is popular." }
+    ]
+  },
+  {
+    "incident": "Security alert",
+    "comments": [
+      { "option": "Block IPs", "member": "Aleksandar", "comment": "Fast containment." },
+      { "option": "Investigate deeply", "member": "Marija", "comment": "Correct, but slower." },
+      { "option": "Ignore warning", "member": "Petar", "comment": "Let's hope it's just a scanner." }
+    ]
+  },
+  {
+    "incident": "API latency spike",
+    "comments": [
+      { "option": "Add servers", "member": "Marija", "comment": "Cloud scaling always works… eventually." },
+      { "option": "Optimize queries", "member": "Aleksandar", "comment": "Probably the real problem." },
+      { "option": "Tell customers it's temporary", "member": "Petar", "comment": "A communication strategy." }
+    ]
+  },
+  {
+    "incident": "Developer burnout",
+    "comments": [
+      { "option": "Give them time off", "member": "Marija", "comment": "Healthy team, better code." },
+      { "option": "Push through sprint", "member": "Aleksandar", "comment": "Short-term productivity." },
+      { "option": "Hire contractor", "member": "Petar", "comment": "Temporary reinforcement." }
+    ]
+  },
+  {
+    "incident": "Legacy code discovered",
+    "comments": [
+      { "option": "Refactor carefully", "member": "Aleksandar", "comment": "Safe but slow." },
+      { "option": "Rewrite service", "member": "Marija", "comment": "Ambitious." },
+      { "option": "Leave it alone", "member": "Petar", "comment": "Legacy code survived this long." }
+    ]
+  },
+  {
+    "incident": "Monitoring broken",
+    "comments": [
+      { "option": "Fix monitoring", "member": "Marija", "comment": "Observability first." },
+      { "option": "Hope nothing breaks", "member": "Petar", "comment": "Ignorance is peaceful." },
+      { "option": "Deploy new monitoring", "member": "Aleksandar", "comment": "Another dashboard never hurts." }
+    ]
+  },
+  {
+    "incident": "Customer complaint",
+    "comments": [
+      { "option": "Fix immediately", "member": "Aleksandar", "comment": "Strong signal to the client." },
+      { "option": "Schedule next sprint", "member": "Marija", "comment": "Balanced approach." },
+      { "option": "Explain roadmap", "member": "Petar", "comment": "Clients love roadmaps." }
+    ]
+  },
+  {
+    "incident": "Dev wants new framework",
+    "comments": [
+      { "option": "Approve experiment", "member": "Petar", "comment": "Developers enjoy new toys." },
+      { "option": "Reject idea", "member": "Marija", "comment": "Stability has value." },
+      { "option": "Create architecture committee", "member": "Aleksandar", "comment": "Meetings will occur." }
+    ]
+  },
+  {
+    "incident": "Unexpected traffic spike",
+    "comments": [
+      { "option": "Scale servers", "member": "Aleksandar", "comment": "Infrastructure solution." },
+      { "option": "Enable caching", "member": "Marija", "comment": "Efficient solution." },
+      { "option": "Rate limit users", "member": "Petar", "comment": "Users will notice." }
+    ]
+  },
+  {
+    "incident": "Database migration",
+    "comments": [
+      { "option": "Approve migration", "member": "Petar", "comment": "Exciting project." },
+      { "option": "Delay decision", "member": "Marija", "comment": "Very common CTO strategy." },
+      { "option": "Create task force", "member": "Aleksandar", "comment": "Many meetings will follow." }
+    ]
+  },
+  {
+    "incident": "Pager alert at night",
+    "comments": [
+      { "option": "Fix immediately", "member": "Aleksandar", "comment": "Sleep later." },
+      { "option": "Silence alert", "member": "Petar", "comment": "Risky." },
+      { "option": "Wake DevOps", "member": "Marija", "comment": "Shared responsibility." }
+    ]
+  },
+  {
+    "incident": "Feature creep",
+    "comments": [
+      { "option": "Accept scope", "member": "Petar", "comment": "Developers will be busy." },
+      { "option": "Push back", "member": "Marija", "comment": "Healthy boundary." },
+      { "option": "Compromise", "member": "Aleksandar", "comment": "Diplomatic solution." }
+    ]
+  },
+  {
+    "incident": "Cloud bill shock",
+    "comments": [
+      { "option": "Optimize infrastructure", "member": "Aleksandar", "comment": "Engineering solution." },
+      { "option": "Ignore for now", "member": "Petar", "comment": "Finance problem later." },
+      { "option": "Reduce servers", "member": "Marija", "comment": "Performance might notice." }
+    ]
+  },
+  {
+    "incident": "Broken deployment pipeline",
+    "comments": [
+      { "option": "Fix pipeline", "member": "Marija", "comment": "Infrastructure stability." },
+      { "option": "Manual deploy", "member": "Aleksandar", "comment": "Temporary workaround." },
+      { "option": "Delay deploy", "member": "Petar", "comment": "Sometimes patience helps." }
+    ]
+  },
+  {
+    "incident": "New CTO podcast idea",
+    "comments": [
+      { "option": "Agree", "member": "Petar", "comment": "Good visibility." },
+      { "option": "Decline", "member": "Aleksandar", "comment": "More time for engineering." },
+      { "option": "Delegate engineer", "member": "Marija", "comment": "Brave decision." }
+    ]
+  },
+  {
+    "incident": "Friday 16:59 deploy",
+    "comments": [
+      { "option": "Deploy anyway", "member": "Petar", "comment": "This will be memorable." },
+      { "option": "Wait until Monday", "member": "Marija", "comment": "Future you will appreciate this." },
+      { "option": "Deploy hotfix only", "member": "Aleksandar", "comment": "Calculated risk." },
+      { "option": "YOLO deploy", "member": "entire Skopje Squad", "comment": "We strongly recommend against this." }
+    ]
+  },
+  {
+    "incident": "Mysterious bug",
+    "comments": [
+      { "option": "Close ticket", "member": "Petar", "comment": "Peaceful solution." },
+      { "option": "Investigate further", "member": "Aleksandar", "comment": "Engineer instinct." },
+      { "option": "Add retry logic", "member": "Marija", "comment": "Often surprisingly effective." }
+    ]
+  },
+  {
+    "incident": "GDPR Compliance Request",
+    "comments": [
+      { "option": "Audit everything properly", "member": "Marija", "comment": "The right thing. Also the painful thing." },
+      { "option": "Send existing partial docs", "member": "Petar", "comment": "Partial compliance is technically still non-compliance." },
+      { "option": "Delay and promise it next week", "member": "Aleksandar", "comment": "Next week will also be busy." }
+    ]
+  },
+  {
+    "incident": "Key Engineer Has an Offer",
+    "comments": [
+      { "option": "Match the offer", "member": "Aleksandar", "comment": "Retention is cheaper than recruitment. Usually." },
+      { "option": "Counter with more equity", "member": "Marija", "comment": "Equity is worth something if the company survives." },
+      { "option": "Let them go", "member": "Petar", "comment": "Their knowledge leaves with them." }
+    ]
+  },
+  {
+    "incident": "Competitor Launches Same Product",
+    "comments": [
+      { "option": "Accelerate your roadmap", "member": "Petar", "comment": "Speed and quality rarely coexist." },
+      { "option": "Double down on your strengths", "member": "Aleksandar", "comment": "The calm response. Rare but effective." },
+      { "option": "Panic and call an all-hands", "member": "Marija", "comment": "All-hands meetings solve nothing but feel productive." }
+    ]
+  },
+  {
+    "incident": "Developer Tweets About Tech Debt",
+    "comments": [
+      { "option": "Address it publicly and honestly", "member": "Aleksandar", "comment": "Transparency earns respect. Eventually." },
+      { "option": "Ask them to delete the tweet", "member": "Marija", "comment": "This has never worked in the history of the internet." },
+      { "option": "Ignore it and hope it dies down", "member": "Petar", "comment": "The internet never forgets." }
+    ]
+  },
+  {
+    "incident": "Board Demands Blockchain",
+    "comments": [
+      { "option": "Explain why it does not fit", "member": "Marija", "comment": "Correct. Also career-limiting." },
+      { "option": "Create an exploratory task force", "member": "Petar", "comment": "A task force is where ideas go to die gracefully." },
+      { "option": "Agree and figure it out later", "member": "Aleksandar", "comment": "Later arrives faster than you think." }
+    ]
+  },
+  {
+    "incident": "QA Team Quits Before Release",
+    "comments": [
+      { "option": "Delay the release", "member": "Aleksandar", "comment": "Shipping without QA is a sport. A dangerous sport." },
+      { "option": "Ship and monitor closely", "member": "Petar", "comment": "Production is the ultimate test environment." },
+      { "option": "Get engineers to test manually", "member": "Marija", "comment": "Engineers testing their own code. What could go wrong." }
+    ]
+  },
+  {
+    "incident": "Staging Environment Missing",
+    "comments": [
+      { "option": "Build one properly", "member": "Marija", "comment": "Should have existed from day one." },
+      { "option": "Use production carefully", "member": "Petar", "comment": "The word 'carefully' is doing a lot of work here." },
+      { "option": "Add it to the backlog", "member": "Aleksandar", "comment": "Backlog item number 347." }
+    ]
+  },
+  {
+    "incident": "CEO Wants a Mobile App",
+    "comments": [
+      { "option": "Build a quick wrapper", "member": "Petar", "comment": "A WebView in a trench coat pretending to be native." },
+      { "option": "Explain the timeline reality", "member": "Aleksandar", "comment": "CEOs and timelines have a complicated relationship." },
+      { "option": "Show existing mobile web as the app", "member": "Marija", "comment": "Add it to the home screen. Ship it." }
+    ]
+  },
+  {
+    "incident": "Tech Debt Sprint Cancelled Again",
+    "comments": [
+      { "option": "Protect the sprint this time", "member": "Aleksandar", "comment": "The team will remember this. In a good way." },
+      { "option": "Push it one more sprint", "member": "Marija", "comment": "Fourth time is definitely not the charm." },
+      { "option": "Allocate 20% time instead", "member": "Petar", "comment": "A compromise that actually works sometimes." }
+    ]
+  },
+  {
+    "incident": "Accidental Data Exposure",
+    "comments": [
+      { "option": "Disclose immediately", "member": "Marija", "comment": "Painful now. Less painful than being caught later." },
+      { "option": "Investigate scope before disclosing", "member": "Aleksandar", "comment": "Reasonable. But the clock is ticking." },
+      { "option": "Quietly fix and hope nobody noticed", "member": "Petar", "comment": "Someone always notices." }
+    ]
+  },
+  {
+    "incident": "Secrets Pushed to GitHub",
+    "comments": [
+      { "option": "Rotate all credentials immediately", "member": "Aleksandar", "comment": "The only real option. Everything else is wishful thinking." },
+      { "option": "Delete the commit and hope", "member": "Petar", "comment": "Git history is forever. Bots scraped it in seconds." },
+      { "option": "Make the repo private and move on", "member": "Marija", "comment": "Private repos don't un-leak credentials." }
+    ]
+  },
+  {
+    "incident": "Office Internet Down",
+    "comments": [
+      { "option": "Everyone on mobile hotspots", "member": "Petar", "comment": "Expensive but functional." },
+      { "option": "Move to a nearby cafe", "member": "Marija", "comment": "Debugging production over cafe wifi. Peak startup." },
+      { "option": "Wait for internet to come back", "member": "Aleksandar", "comment": "Production will not wait with you." }
+    ]
+  },
+  {
+    "incident": "Public Slack Argument",
+    "comments": [
+      { "option": "Mediate and set a standard", "member": "Aleksandar", "comment": "Leadership moment. Choose wisely." },
+      { "option": "Stay out of it", "member": "Marija", "comment": "It will escalate. It always escalates." },
+      { "option": "Make a joke and move on", "member": "Petar", "comment": "Humor defuses most things. Most." }
+    ]
+  },
+  {
+    "incident": "Engineers Booked for Client Calls",
+    "comments": [
+      { "option": "Cancel the calls", "member": "Marija", "comment": "Engineers will love you. Sales will not." },
+      { "option": "Let it happen this once", "member": "Petar", "comment": "It is never just once." },
+      { "option": "Set a policy going forward", "member": "Aleksandar", "comment": "Process prevents pain. Eventually." }
+    ]
+  },
+  {
+    "incident": "Vendor API Goes Down",
+    "comments": [
+      { "option": "Build a quick fallback", "member": "Aleksandar", "comment": "The fallback you should have built months ago." },
+      { "option": "Display a maintenance page", "member": "Marija", "comment": "Honest. Users will still complain." },
+      { "option": "Wait and monitor their status page", "member": "Petar", "comment": "Refreshing a status page is not incident response." }
+    ]
+  },
+  {
+    "incident": "Engineer Requests 4 Day Week",
+    "comments": [
+      { "option": "Approve it", "member": "Marija", "comment": "Happy engineers write better code. Proven fact." },
+      { "option": "Offer a trial period", "member": "Aleksandar", "comment": "A safe middle ground." },
+      { "option": "Decline", "member": "Petar", "comment": "They will start looking elsewhere by Friday." }
+    ]
+  },
+  {
+    "incident": "Competitor Poaches Your Best Engineer",
+    "comments": [
+      { "option": "Conduct a knowledge transfer", "member": "Aleksandar", "comment": "Two weeks to transfer five years of knowledge. Good luck." },
+      { "option": "Ask them to reconsider", "member": "Marija", "comment": "They already considered. Twice." },
+      { "option": "Wish them well and move on", "member": "Petar", "comment": "Graceful. And they might come back one day." }
+    ]
+  },
+  {
+    "incident": "Investor Due Diligence",
+    "comments": [
+      { "option": "Write it thoroughly", "member": "Marija", "comment": "Investors respect honesty. Sometimes." },
+      { "option": "Reuse existing documentation", "member": "Petar", "comment": "Assuming it exists. And is accurate." },
+      { "option": "Delegate to a senior engineer", "member": "Aleksandar", "comment": "They know the system better than you anyway." }
+    ]
+  },
+  {
+    "incident": "Deployed to Wrong Environment",
+    "comments": [
+      { "option": "Rollback immediately", "member": "Marija", "comment": "Standard procedure. No shame in it." },
+      { "option": "Feature flag it off", "member": "Aleksandar", "comment": "Modern problems, modern solutions." },
+      { "option": "Ship it and call it a surprise release", "member": "Petar", "comment": "Confidence is everything. Until it isn't." }
+    ]
+  },
+  {
+    "incident": "Performance Reviews During Outage",
+    "comments": [
+      { "option": "Fix production first", "member": "Aleksandar", "comment": "Customers don't care about your review cycle." },
+      { "option": "Split the team", "member": "Marija", "comment": "Half-focused on both means good at neither." },
+      { "option": "Postpone reviews", "member": "Petar", "comment": "HR will understand. Probably." }
+    ]
+  },
+  {
+    "incident": "New Hire Breaks Production",
+    "comments": [
+      { "option": "Support them publicly", "member": "Marija", "comment": "The team is watching you, not the new hire." },
+      { "option": "Fix it quietly", "member": "Aleksandar", "comment": "Diplomatic. The new hire still learns." },
+      { "option": "Make an example of the situation", "member": "Petar", "comment": "Congratulations, nobody will deploy anything ever again." }
+    ]
+  },
+  {
+    "incident": "Sales Promises 99.99% SLA",
+    "comments": [
+      { "option": "Build toward it properly", "member": "Aleksandar", "comment": "99.99% means 52 minutes of downtime per year. Total." },
+      { "option": "Tell sales to renegotiate", "member": "Marija", "comment": "This conversation will be uncomfortable." },
+      { "option": "Quietly accept and hope for the best", "member": "Petar", "comment": "Hope is not a strategy. But it is popular." }
+    ]
+  },
+  {
+    "incident": "Developer Deletes Production Database",
+    "comments": [
+      { "option": "Restore from backup", "member": "Aleksandar", "comment": "This is the moment backups justify their existence." },
+      { "option": "Check when last backup was taken", "member": "Marija", "comment": "The scariest question in all of engineering." },
+      { "option": "Pray there is a backup", "member": "Petar", "comment": "Deploy and Pray. Literally." }
+    ]
+  },
+  {
+    "incident": "On-Call Gap Discovered",
+    "comments": [
+      { "option": "Volunteer yourself", "member": "Marija", "comment": "Leading by example. Your weekend disagrees." },
+      { "option": "Set up a proper rotation", "member": "Aleksandar", "comment": "Should have existed already. But better late than never." },
+      { "option": "Hope nothing breaks this weekend", "member": "Petar", "comment": "Murphy's Law was invented for this exact situation." }
+    ]
+  },
+  {
+    "incident": "Viral Reddit Post",
+    "comments": [
+      { "option": "Respond publicly and transparently", "member": "Aleksandar", "comment": "Reddit respects honesty. Usually." },
+      { "option": "Fix the issues first then respond", "member": "Marija", "comment": "Actions before words. Smart." },
+      { "option": "Ignore it", "member": "Petar", "comment": "2000 upvotes and climbing. This is not going away." }
+    ]
+  }
+]
