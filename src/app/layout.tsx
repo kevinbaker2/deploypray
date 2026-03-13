@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Deploy & Pray",
-  description: "A survival game for DevOps engineers",
+  description: "The CTO Simulator",
 };
 
 export default function RootLayout({
