@@ -349,7 +349,7 @@ function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: 
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Alex"
             maxLength={20}
-            className="bg-[var(--btn)] border border-[var(--btn-border)] rounded-md px-3 py-2 text-sm text-[var(--text-bright)] placeholder:text-[var(--text-dim)]/50 outline-none focus:border-[var(--cyan)]/60 transition-colors"
+            className="bg-[var(--btn)] border border-[var(--btn-border)] rounded-md px-3 py-2 text-sm text-[var(--text-bright)] placeholder:text-[var(--text-dim)]/70 outline-none focus:border-[var(--cyan)]/60 transition-colors"
           />
         </div>
 
@@ -373,32 +373,32 @@ function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: 
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-[var(--text-dim)] text-[10px] tracking-widest">STARTUP NAME <span className="opacity-50">(optional)</span></label>
+          <label className="text-[var(--text-dim)] text-[10px] tracking-widest">STARTUP NAME <span className="opacity-70">(optional)</span></label>
           <input
             type="text"
             value={startup}
             onChange={(e) => setStartup(e.target.value)}
             placeholder="Leave empty for a random startup name"
             maxLength={30}
-            className="bg-[var(--btn)] border border-[var(--btn-border)] rounded-md px-3 py-2 text-sm text-[var(--text-bright)] placeholder:text-[var(--text-dim)]/50 outline-none focus:border-[var(--cyan)]/60 transition-colors"
+            className="bg-[var(--btn)] border border-[var(--btn-border)] rounded-md px-3 py-2 text-sm text-[var(--text-bright)] placeholder:text-[var(--text-dim)]/70 outline-none focus:border-[var(--cyan)]/60 transition-colors"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
           <label className="text-[var(--text-dim)] text-[10px] tracking-widest">GAME MODE</label>
-          <div className="flex flex-col gap-2">
+          <div className="grid grid-cols-3 gap-2">
             {GAME_MODES.map((m) => (
               <button
                 key={m.key}
                 onClick={() => setGameMode(m.key)}
-                className={`text-left px-3 py-2.5 rounded-md border transition-all cursor-pointer ${
+                className={`text-center px-2 py-2.5 rounded-md border transition-all cursor-pointer ${
                   gameMode === m.key
                     ? "border-[var(--cyan)] bg-[var(--cyan)]/10"
                     : "border-[var(--btn-border)] bg-[var(--btn)] hover:bg-[var(--btn-hover)]"
                 }`}
               >
-                <div className="text-sm text-[var(--text-bright)] font-semibold">{m.label}</div>
-                <div className="text-[var(--text-dim)] text-xs mt-0.5">{m.desc}</div>
+                <div className="text-xs text-[var(--text-bright)] font-semibold">{m.label}</div>
+                <div className="text-[var(--text)] text-[10px] mt-0.5 leading-tight">{m.desc}</div>
               </button>
             ))}
           </div>
@@ -497,7 +497,7 @@ function SlackWelcomeScreen({ messages, onContinue }: { messages: { avatar: stri
             <div className="flex flex-col gap-0.5">
               <div className="flex items-baseline gap-2">
                 <span className="text-white text-sm font-bold">{msg.user}</span>
-                <span className="text-[#72767d] text-[10px]">today</span>
+                <span className="text-[#8e9297] text-[10px]">today</span>
               </div>
               <p className="text-[#dcddde] text-sm">{msg.text}</p>
             </div>
@@ -587,7 +587,7 @@ function StatusBar({ stats, index, total, gameMode, survivalSurvived }: { stats:
           <span className="text-[var(--green)] text-sm font-bold">Deploy</span>
           <span className="text-[var(--text-dim)] text-sm">&</span>
           <span className="text-[var(--red)] text-sm font-bold">Pray</span>
-          <span className="text-[var(--text-dim)] text-[9px] ml-1 opacity-60">({modeLabels[gameMode]})</span>
+          <span className="text-[var(--text-dim)] text-[9px] ml-1 opacity-80">({modeLabels[gameMode]})</span>
         </div>
         <div className="text-[var(--text-dim)] text-[10px] tracking-wider">
           {gameMode === "survival" ? (
@@ -605,7 +605,7 @@ function StatusBar({ stats, index, total, gameMode, survivalSurvived }: { stats:
             <div key={stat} className="flex flex-col gap-0.5">
               <div className="flex items-center justify-between text-[10px]">
                 <span className="text-[var(--text-dim)] flex items-center gap-1">
-                  <span className="opacity-60">{getStatIcon(stat)}</span>
+                  <span className="opacity-80">{getStatIcon(stat)}</span>
                   {getStatLabel(stat)}
                 </span>
                 <span className="text-[var(--text)] tabular-nums">{value}</span>
@@ -1069,16 +1069,21 @@ function ReportScreen({
           <div className="text-sm font-semibold text-[var(--text-bright)] mb-1">
             🇲🇰 Want a real Skopje Squad for your engineering team?
           </div>
-          <p className="text-[var(--text-dim)] text-xs mb-3">
-            We provide senior engineers from North Macedonia who show up when it matters.
+          <p className="text-[var(--text)] text-xs mb-3">
+            We help companies build dedicated software development teams in North Macedonia.
           </p>
           <a
-            href="mailto:hello@skopjesquad.com"
+            href="mailto:kevin@personalprogrammer.nl"
             className="inline-block border border-[var(--cyan)]/40 text-[var(--cyan)] px-5 py-2 rounded-md
                        hover:bg-[var(--cyan)]/10 transition-colors text-xs font-semibold"
           >
             Get in touch
           </a>
+        </div>
+
+        {/* Copyright */}
+        <div className="text-center pb-1">
+          <span className="text-[var(--text-dim)] text-[10px]">&copy; Personal Programmer</span>
         </div>
       </div>
     </div>
