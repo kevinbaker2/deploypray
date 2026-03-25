@@ -1044,7 +1044,7 @@ function ReportScreen({
         {/* LinkedIn share */}
         <button
           onClick={() => {
-            const gameUrl = window.location.href;
+            const gameUrl = "https://deploypray.personalprogrammer.nl/";
             const killStatNames: Record<KillStat, string> = {
               uptime: "Uptime",
               morale: "Morale",
