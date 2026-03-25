@@ -67,6 +67,7 @@ const SCENARIOS: Scenario[] = [
       { avatar: "🧑‍💼", user: "CEO", text: `Welcome our new CTO, ${name}!` },
       { avatar: "👨‍💻", user: "Dev1", text: "finally" },
       { avatar: "👩‍💻", user: "Dev2", text: "production has been down for 20 minutes btw" },
+      { avatar: "🇲🇰", user: "Skopje Squad", text: `CTO, we heard you just started. If things get rough — we're one call away. Use us wisely, we can only join 3 times.` },
     ],
     winEnding: (name, startup) => [
       `Congratulations, ${name}.`,
@@ -94,6 +95,7 @@ const SCENARIOS: Scenario[] = [
       { avatar: "👨‍💻", user: "Dev2", text: "yeah" },
       { avatar: "👩‍💻", user: "Dev1", text: "we have 6 weeks" },
       { avatar: "👨‍💻", user: "Dev2", text: "lol" },
+      { avatar: "🇲🇰", user: "Skopje Squad", text: `CTO, we heard you just started. If things get rough — we're one call away. Use us wisely, we can only join 3 times.` },
     ],
     winEnding: (name, startup) => [
       `Incredible, ${name}.`,
@@ -120,6 +122,7 @@ const SCENARIOS: Scenario[] = [
       { avatar: "👨‍💻", user: "Dev1", text: "oh" },
       { avatar: "👩‍💻", user: "Dev2", text: "already a new one?" },
       { avatar: "👨‍💻", user: "Dev1", text: "good luck though, seriously" },
+      { avatar: "🇲🇰", user: "Skopje Squad", text: `CTO, we heard you just started. If things get rough — we're one call away. Use us wisely, we can only join 3 times.` },
     ],
     winEnding: (name, startup) => [
       `Remarkable, ${name}.`,
@@ -136,6 +139,7 @@ const SCENARIOS: Scenario[] = [
 ];
 
 type GamePhase = "profile" | "intro" | "slack" | "playing" | "end-narrative" | "report";
+type GameMode = "quick" | "full" | "survival";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -217,9 +221,9 @@ function getGameOverInfo(stats: Stats): GameOverInfo | null {
   return null;
 }
 
-function getCTOTitle(survived: number, k8sBlames: number, squadCalls: number, killStat: KillStat | null, stats?: Stats): { title: string; description: string } {
+function getCTOTitle(survived: number, k8sBlames: number, squadCalls: number, killStat: KillStat | null, stats?: Stats, won?: boolean): { title: string; description: string } {
   // Win titles — based on player choices
-  if (killStat === null && survived >= 25 && stats) {
+  if (killStat === null && won && stats) {
     if (stats.uptime >= 70 && stats.morale >= 70 && stats.cloud_cost <= 30 && stats.reputation >= 70)
       return { title: "The Unicorn CTO", description: "All stats above 70, costs under control. Investors are speechless." };
     if (stats.morale >= 70 && stats.cloud_cost <= 40)
@@ -304,18 +308,25 @@ function CTOPlayerCard({ playerName, startupName, avatarImage }: { playerName: s
 
 // ─── Story Components ─────────────────────────────────────────────────
 
-function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: string, avatarImage: string) => void }) {
+function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: string, avatarImage: string, mode: GameMode) => void }) {
   const [name, setName] = useState("");
   const [startup, setStartup] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const [gameMode, setGameMode] = useState<GameMode>("full");
 
   const canContinue = name.trim().length > 0 && selectedAvatar !== null;
 
   const handleSubmit = () => {
     if (!canContinue) return;
     const finalStartup = startup.trim() || RANDOM_STARTUP_NAMES[Math.floor(Math.random() * RANDOM_STARTUP_NAMES.length)];
-    onComplete(name.trim(), finalStartup, selectedAvatar);
+    onComplete(name.trim(), finalStartup, selectedAvatar, gameMode);
   };
+
+  const GAME_MODES: { key: GameMode; label: string; desc: string }[] = [
+    { key: "quick", label: "Quick Run", desc: "10 incidents. For when you have 2 minutes." },
+    { key: "full", label: "Full Week", desc: "25 incidents. The real CTO experience." },
+    { key: "survival", label: "Survival Mode", desc: "How far can you go? Incidents never stop." },
+  ];
 
   return (
     <div className="animate-fade-in">
@@ -371,6 +382,26 @@ function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: 
             maxLength={30}
             className="bg-[var(--btn)] border border-[var(--btn-border)] rounded-md px-3 py-2 text-sm text-[var(--text-bright)] placeholder:text-[var(--text-dim)]/50 outline-none focus:border-[var(--cyan)]/60 transition-colors"
           />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[var(--text-dim)] text-[10px] tracking-widest">GAME MODE</label>
+          <div className="flex flex-col gap-2">
+            {GAME_MODES.map((m) => (
+              <button
+                key={m.key}
+                onClick={() => setGameMode(m.key)}
+                className={`text-left px-3 py-2.5 rounded-md border transition-all cursor-pointer ${
+                  gameMode === m.key
+                    ? "border-[var(--cyan)] bg-[var(--cyan)]/10"
+                    : "border-[var(--btn-border)] bg-[var(--btn)] hover:bg-[var(--btn-hover)]"
+                }`}
+              >
+                <div className="text-sm text-[var(--text-bright)] font-semibold">{m.label}</div>
+                <div className="text-[var(--text-dim)] text-xs mt-0.5">{m.desc}</div>
+              </button>
+            ))}
+          </div>
         </div>
 
         <button
@@ -547,7 +578,8 @@ function EndNarrativeScreen({
 
 // ─── Game Components ──────────────────────────────────────────────────
 
-function StatusBar({ stats, index, total }: { stats: Stats; index: number; total: number }) {
+function StatusBar({ stats, index, total, gameMode, survivalSurvived }: { stats: Stats; index: number; total: number; gameMode: GameMode; survivalSurvived: number }) {
+  const modeLabels: Record<GameMode, string> = { quick: "Quick Run", full: "Full Week", survival: "Survival" };
   return (
     <div className="border-b border-[var(--card-border)] px-4 py-3">
       <div className="flex items-center justify-between mb-2.5">
@@ -555,9 +587,14 @@ function StatusBar({ stats, index, total }: { stats: Stats; index: number; total
           <span className="text-[var(--green)] text-sm font-bold">Deploy</span>
           <span className="text-[var(--text-dim)] text-sm">&</span>
           <span className="text-[var(--red)] text-sm font-bold">Pray</span>
+          <span className="text-[var(--text-dim)] text-[9px] ml-1 opacity-60">({modeLabels[gameMode]})</span>
         </div>
         <div className="text-[var(--text-dim)] text-[10px] tracking-wider">
-          INCIDENT <span className="text-[var(--text)]">{Math.min(index + 1, total)}</span>/{total}
+          {gameMode === "survival" ? (
+            <>SURVIVED <span className="text-[var(--text)]">{survivalSurvived}</span></>
+          ) : (
+            <>INCIDENT <span className="text-[var(--text)]">{Math.min(index + 1, total)}</span>/{total}</>
+          )}
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4 gap-y-2">
@@ -802,6 +839,8 @@ function ReportScreen({
   fridayDeploys,
   onRestart,
   onNewCTO,
+  gameMode,
+  survivalSurvived,
 }: {
   won: boolean;
   gameOverInfo: GameOverInfo | null;
@@ -816,8 +855,10 @@ function ReportScreen({
   fridayDeploys: number;
   onRestart: () => void;
   onNewCTO: () => void;
+  gameMode: GameMode;
+  survivalSurvived: number;
 }) {
-  const cto = getCTOTitle(survived, k8sBlames, squadCalls, gameOverInfo?.killStat ?? null, stats);
+  const cto = getCTOTitle(survived, k8sBlames, squadCalls, gameOverInfo?.killStat ?? null, stats, won);
   const timestamp = new Date().toISOString().replace("T", " ").split(".")[0];
 
   const killStatLabels: Record<KillStat, string> = {
@@ -874,12 +915,18 @@ function ReportScreen({
             <div className="border-t border-[var(--red)]/15" />
 
             {/* TERMINATED headline */}
-            {gameOverInfo && (
+            {gameOverInfo && gameMode === "survival" ? (
+              <div className="text-center py-2">
+                <div className="text-[var(--text-dim)] text-[10px] tracking-widest mb-1">SURVIVAL MODE</div>
+                <h2 className="text-4xl font-bold text-[var(--orange)] tracking-tight">Incidents Survived: {survivalSurvived}</h2>
+                <p className="text-[var(--text-dim)] text-xs mt-2 italic">{gameOverInfo.flavor}</p>
+              </div>
+            ) : gameOverInfo ? (
               <div className="text-center py-2">
                 <h2 className="text-5xl font-bold text-[var(--red)] tracking-tight">{gameOverInfo.headline}</h2>
                 <p className="text-[var(--text-dim)] text-xs mt-2 italic">{gameOverInfo.flavor}</p>
               </div>
-            )}
+            ) : null}
           </>
         )}
 
@@ -1018,11 +1065,20 @@ function ReportScreen({
         </button>
 
         {/* Skopje Squad CTA */}
-        <div className="text-center pt-1 pb-1">
-          <span className="text-[var(--text-dim)] text-[10px]">
-            🇲🇰 Want a real Skopje Squad for your engineering team?{" "}
-            <a href="mailto:hello@skopjesquad.com" className="underline hover:text-[var(--text)] transition-colors">Contact us</a>
-          </span>
+        <div className="bg-[#1a2332] border border-[var(--cyan)]/20 rounded-lg px-4 py-4 text-center">
+          <div className="text-sm font-semibold text-[var(--text-bright)] mb-1">
+            🇲🇰 Want a real Skopje Squad for your engineering team?
+          </div>
+          <p className="text-[var(--text-dim)] text-xs mb-3">
+            We provide senior engineers from North Macedonia who show up when it matters.
+          </p>
+          <a
+            href="mailto:hello@skopjesquad.com"
+            className="inline-block border border-[var(--cyan)]/40 text-[var(--cyan)] px-5 py-2 rounded-md
+                       hover:bg-[var(--cyan)]/10 transition-colors text-xs font-semibold"
+          >
+            Get in touch
+          </a>
         </div>
       </div>
     </div>
@@ -1037,6 +1093,7 @@ export default function Home() {
   const [startupName, setStartupName] = useState("");
   const [avatarImage, setAvatarImage] = useState("");
   const [scenario, setScenario] = useState<Scenario>(() => SCENARIOS[Math.floor(Math.random() * SCENARIOS.length)]);
+  const [gameMode, setGameMode] = useState<GameMode>("full");
 
   // Game phase
   const [phase, setPhase] = useState<GamePhase>("profile");
@@ -1054,6 +1111,7 @@ export default function Home() {
   const [isFirstSquadCall, setIsFirstSquadCall] = useState(true);
   const [k8sBlames, setK8sBlames] = useState(0);
   const [fridayDeploys, setFridayDeploys] = useState(0);
+  const [survivalSurvived, setSurvivalSurvived] = useState(0);
 
   const currentIncident = deck[index] ?? null;
 
@@ -1094,6 +1152,9 @@ export default function Home() {
 
       setStats(next);
       setActiveSquadComments(null);
+      if (gameMode === "survival") {
+        setSurvivalSurvived((n) => n + 1);
+      }
 
       const info = getGameOverInfo(next);
       if (info) {
@@ -1103,6 +1164,12 @@ export default function Home() {
       }
 
       if (nextIndex >= deck.length) {
+        if (gameMode === "survival") {
+          // Reshuffle and keep going
+          setDeck(shuffle(incidents));
+          setIndex(0);
+          return;
+        }
         setWon(true);
         setPhase("end-narrative");
         return;
@@ -1110,7 +1177,7 @@ export default function Home() {
 
       setIndex(nextIndex);
     },
-    [stats, index, deck.length, currentIncident]
+    [stats, index, deck.length, currentIncident, gameMode]
   );
 
   const callSquad = useCallback(() => {
@@ -1131,7 +1198,8 @@ export default function Home() {
 
   const restart = useCallback(() => {
     setStats(INITIAL_STATS);
-    setDeck(shuffle(incidents).slice(0, 25));
+    const deckSize = gameMode === "quick" ? 10 : gameMode === "survival" ? 50 : 25;
+    setDeck(shuffle(incidents).slice(0, deckSize));
     setIndex(0);
     setGameOverInfo(null);
     setWon(false);
@@ -1141,9 +1209,10 @@ export default function Home() {
     setIsFirstSquadCall(true);
     setK8sBlames(0);
     setFridayDeploys(0);
+    setSurvivalSurvived(0);
     setScenario(SCENARIOS[Math.floor(Math.random() * SCENARIOS.length)]);
     setPhase("intro");
-  }, []);
+  }, [gameMode]);
 
   const newCTO = useCallback(() => {
     setStats(INITIAL_STATS);
@@ -1157,6 +1226,8 @@ export default function Home() {
     setIsFirstSquadCall(true);
     setK8sBlames(0);
     setFridayDeploys(0);
+    setSurvivalSurvived(0);
+    setGameMode("full");
     setPlayerName("");
     setStartupName("");
     setAvatarImage("");
@@ -1164,10 +1235,13 @@ export default function Home() {
     setPhase("profile");
   }, []);
 
-  const handleProfileComplete = useCallback((name: string, startup: string, avatarImg: string) => {
+  const handleProfileComplete = useCallback((name: string, startup: string, avatarImg: string, mode: GameMode) => {
     setPlayerName(name);
     setStartupName(startup);
     setAvatarImage(avatarImg);
+    setGameMode(mode);
+    const deckSize = mode === "quick" ? 10 : mode === "survival" ? 50 : 25;
+    setDeck(shuffle(incidents).slice(0, deckSize));
     setPhase("intro");
   }, []);
 
@@ -1194,7 +1268,7 @@ export default function Home() {
       <div className="w-full max-w-[480px] bg-[var(--card)]/95 backdrop-blur-md border border-[var(--card-border)] rounded-lg shadow-2xl shadow-black/50 overflow-hidden z-10 relative flex flex-col max-h-[calc(100vh-2rem)]">
         {/* Player card + Status bar — only during gameplay */}
         {showPlayerCard && <CTOPlayerCard playerName={playerName} startupName={startupName} avatarImage={avatarImage} />}
-        {showStatusBar && <StatusBar stats={stats} index={index} total={deck.length} />}
+        {showStatusBar && <StatusBar stats={stats} index={index} total={deck.length} gameMode={gameMode} survivalSurvived={survivalSurvived} />}
 
         {/* Scrollable content area */}
         <div className="flex-1 overflow-y-auto">
@@ -1220,7 +1294,7 @@ export default function Home() {
             <ReportScreen
               won={won}
               gameOverInfo={gameOverInfo}
-              survived={won ? deck.length : index}
+              survived={gameMode === "survival" ? survivalSurvived : (won ? deck.length : index)}
               total={deck.length}
               stats={stats}
               k8sBlames={k8sBlames}
@@ -1231,6 +1305,8 @@ export default function Home() {
               fridayDeploys={fridayDeploys}
               onRestart={restart}
               onNewCTO={newCTO}
+              gameMode={gameMode}
+              survivalSurvived={survivalSurvived}
             />
           ) : currentIncident ? (
             <IncidentCard
