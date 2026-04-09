@@ -1081,7 +1081,7 @@ function ReportScreen({
                 ? `I just survived as CTO of ${startupName} in Deploy & Pray 🙏\n\nFinal stats:\nUptime: ${stats.uptime}%\nMorale: ${stats.morale}%\nCloud Cost: ${stats.cloud_cost}%\nReputation: ${stats.reputation}%\n\nMy CTO title: ${cto.title}\n\nCan you do better? Play here: ${gameUrl}\n\n#CTO #DevOps #StartupLife #DeployAndPray`
                 : `I just failed as CTO of ${startupName} in Deploy & Pray 🙏\n\nSurvived ${survived} incidents before ${gameOverInfo ? killStatNames[gameOverInfo.killStat] : "everything"} collapsed.\n\nMy CTO title: ${cto.title}\n\nThink you can survive longer? Play here: ${gameUrl}\n\n#CTO #DevOps #StartupLife #DeployAndPray`;
               navigator.clipboard.writeText(text).catch(() => {});
-              window.open("https://www.linkedin.com/feed/", "_blank", "noopener,noreferrer");
+              window.open("https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fdeploypray.personalprogrammer.nl%2F", "_blank", "noopener,noreferrer");
               setLinkedInCopied(true);
             }}
             className="w-full bg-[#0A66C2] hover:bg-[#004182] text-white px-4 py-2.5 rounded-md
