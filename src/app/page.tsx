@@ -927,7 +927,7 @@ function ReportScreen({
 
             {gameOverInfo && gameMode === "survival" ? (
               <div className="text-center py-2">
-                <h2 className="text-5xl font-bold text-[var(--orange)] tracking-tight">Incidents Survived: {survivalSurvived}</h2>
+                <h2 className="text-3xl font-bold text-[var(--orange)] tracking-tight">Incidents Survived: {survivalSurvived}</h2>
                 <p className="text-[var(--text-dim)] text-xs mt-2 italic">{gameOverInfo.flavor}</p>
               </div>
             ) : gameOverInfo ? (
