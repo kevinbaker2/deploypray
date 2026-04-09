@@ -385,7 +385,7 @@ function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: 
 
         <div className="flex flex-col gap-1.5">
           <label className="text-[var(--text-dim)] text-[10px] tracking-widest">GAME MODE</label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {GAME_MODES.map((m) => (
               <button
                 key={m.key}
