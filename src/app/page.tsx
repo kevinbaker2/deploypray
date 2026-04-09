@@ -139,7 +139,7 @@ const SCENARIOS: Scenario[] = [
 ];
 
 type GamePhase = "profile" | "intro" | "slack" | "playing" | "end-narrative" | "report";
-type GameMode = "quick" | "full" | "survival";
+type GameMode = "quick" | "survival";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -312,7 +312,7 @@ function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: 
   const [name, setName] = useState("");
   const [startup, setStartup] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
-  const [gameMode, setGameMode] = useState<GameMode>("full");
+  const [gameMode, setGameMode] = useState<GameMode>("quick");
 
   const canContinue = name.trim().length > 0 && selectedAvatar !== null;
 
@@ -323,8 +323,7 @@ function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: 
   };
 
   const GAME_MODES: { key: GameMode; label: string; desc: string }[] = [
-    { key: "quick", label: "Quick Run", desc: "10 incidents. For when you have 2 minutes." },
-    { key: "full", label: "Full Week", desc: "25 incidents. The real CTO experience." },
+    { key: "quick", label: "Quick Run", desc: "15 incidents, randomly selected. For when you have 2 minutes." },
     { key: "survival", label: "Survival Mode", desc: "How far can you go? Incidents never stop." },
   ];
 
@@ -579,7 +578,7 @@ function EndNarrativeScreen({
 // ─── Game Components ──────────────────────────────────────────────────
 
 function StatusBar({ stats, index, total, gameMode, survivalSurvived }: { stats: Stats; index: number; total: number; gameMode: GameMode; survivalSurvived: number }) {
-  const modeLabels: Record<GameMode, string> = { quick: "Quick Run", full: "Full Week", survival: "Survival" };
+  const modeLabels: Record<GameMode, string> = { quick: "Quick Run", survival: "Survival" };
   return (
     <div className="border-b border-[var(--card-border)] px-4 py-3">
       <div className="flex items-center justify-between mb-2.5">
@@ -1098,14 +1097,14 @@ export default function Home() {
   const [startupName, setStartupName] = useState("");
   const [avatarImage, setAvatarImage] = useState("");
   const [scenario, setScenario] = useState<Scenario>(() => SCENARIOS[Math.floor(Math.random() * SCENARIOS.length)]);
-  const [gameMode, setGameMode] = useState<GameMode>("full");
+  const [gameMode, setGameMode] = useState<GameMode>("quick");
 
   // Game phase
   const [phase, setPhase] = useState<GamePhase>("profile");
 
   // Game state
   const [stats, setStats] = useState<Stats>(INITIAL_STATS);
-  const [deck, setDeck] = useState<Incident[]>(() => shuffle(incidents).slice(0, 25));
+  const [deck, setDeck] = useState<Incident[]>(() => shuffle(incidents).slice(0, 15));
   const [index, setIndex] = useState(0);
   const [gameOverInfo, setGameOverInfo] = useState<GameOverInfo | null>(null);
   const [won, setWon] = useState(false);
@@ -1203,7 +1202,7 @@ export default function Home() {
 
   const restart = useCallback(() => {
     setStats(INITIAL_STATS);
-    const deckSize = gameMode === "quick" ? 10 : gameMode === "survival" ? 50 : 25;
+    const deckSize = gameMode === "quick" ? 15 : 50;
     setDeck(shuffle(incidents).slice(0, deckSize));
     setIndex(0);
     setGameOverInfo(null);
@@ -1221,7 +1220,7 @@ export default function Home() {
 
   const newCTO = useCallback(() => {
     setStats(INITIAL_STATS);
-    setDeck(shuffle(incidents).slice(0, 25));
+    setDeck(shuffle(incidents).slice(0, 15));
     setIndex(0);
     setGameOverInfo(null);
     setWon(false);
@@ -1232,7 +1231,7 @@ export default function Home() {
     setK8sBlames(0);
     setFridayDeploys(0);
     setSurvivalSurvived(0);
-    setGameMode("full");
+    setGameMode("quick");
     setPlayerName("");
     setStartupName("");
     setAvatarImage("");
@@ -1245,7 +1244,7 @@ export default function Home() {
     setStartupName(startup);
     setAvatarImage(avatarImg);
     setGameMode(mode);
-    const deckSize = mode === "quick" ? 10 : mode === "survival" ? 50 : 25;
+    const deckSize = mode === "quick" ? 15 : 50;
     setDeck(shuffle(incidents).slice(0, deckSize));
     setPhase("intro");
   }, []);
