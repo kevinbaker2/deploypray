@@ -1088,18 +1088,18 @@ function ReportScreen({
 
         {/* Skopje Squad CTA */}
         <div className="bg-[#1a2332] border border-[var(--cyan)]/20 rounded-lg px-4 py-4 text-center">
-          <div className="text-sm font-semibold text-[var(--text-bright)] mb-1">
-            🇲🇰 Want a real Skopje Squad for your engineering team?
+          <div className="text-sm font-semibold text-[var(--text-bright)] mb-2">
+            🇲🇰 Made some tough CTO calls? Let&apos;s make the next ones easier.
           </div>
-          <p className="text-[var(--text)] text-xs mb-3">
-            We help companies build dedicated software development teams in North Macedonia.
+          <p className="text-[var(--text)] text-xs mb-3 leading-relaxed">
+            Scale your engineering team with senior developers and architects from North Macedonia — flexible, reliable, and built for long-term growth.
           </p>
           <a
             href="mailto:kevin@personalprogrammer.nl"
-            className="inline-block border border-[var(--cyan)]/40 text-[var(--cyan)] px-5 py-2 rounded-md
-                       hover:bg-[var(--cyan)]/10 transition-colors text-xs font-semibold"
+            className="inline-block bg-[var(--cyan)]/10 border border-[var(--cyan)]/40 text-[var(--cyan)] px-5 py-2 rounded-md
+                       hover:bg-[var(--cyan)]/20 transition-colors text-xs font-semibold"
           >
-            Get in touch
+            📧 Email your situation
           </a>
         </div>
 
