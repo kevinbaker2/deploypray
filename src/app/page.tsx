@@ -148,7 +148,7 @@ interface LeaderboardEntry {
   created_at: string;
 }
 
-type GamePhase = "profile" | "intro" | "slack" | "playing" | "end-narrative" | "leaderboard-optin" | "report";
+type GamePhase = "profile" | "intro" | "slack" | "playing" | "end-narrative" | "leaderboard-optin" | "report" | "leaderboard-view";
 type GameMode = "quick" | "survival";
 
 function shuffle<T>(arr: T[]): T[] {
@@ -321,11 +321,10 @@ function CTOPlayerCard({ playerName, startupName, avatarImage }: { playerName: s
 function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: string, avatarImage: string, mode: GameMode) => void }) {
   const [name, setName] = useState("");
   const [startup, setStartup] = useState("");
-  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const [selectedAvatar, setSelectedAvatar] = useState<string>(AVATARS[0]);
   const [gameMode, setGameMode] = useState<GameMode>("quick");
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
-  const canContinue = name.trim().length > 0 && selectedAvatar !== null;
+  const canContinue = name.trim().length > 0;
 
   const handleSubmit = () => {
     if (!canContinue) return;
@@ -412,23 +411,6 @@ function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: 
               </button>
             ))}
           </div>
-        </div>
-
-        {/* Leaderboard preview */}
-        <div>
-          <button
-            onClick={() => setShowLeaderboard((v) => !v)}
-            className="w-full border border-[var(--btn-border)] text-[var(--text-dim)] px-4 py-2 rounded-md
-                       hover:bg-[var(--btn-hover)] hover:text-[var(--text)] transition-all cursor-pointer text-xs flex items-center justify-center gap-1.5"
-          >
-            🏆 {showLeaderboard ? "Hide Leaderboard" : "View Global Leaderboard"}
-          </button>
-          {showLeaderboard && (
-            <div className="mt-2">
-              <div className="text-[var(--text-dim)] text-[10px] tracking-widest mb-2">SURVIVAL MODE — TOP 10</div>
-              <LeaderboardDisplay />
-            </div>
-          )}
         </div>
 
         <button
@@ -866,9 +848,9 @@ function ReportScreen({
   fridayDeploys,
   onRestart,
   onNewCTO,
+  onViewLeaderboard,
   gameMode,
   survivalSurvived,
-  submittedEntryId,
 }: {
   won: boolean;
   gameOverInfo: GameOverInfo | null;
@@ -883,9 +865,9 @@ function ReportScreen({
   fridayDeploys: number;
   onRestart: () => void;
   onNewCTO: () => void;
+  onViewLeaderboard: () => void;
   gameMode: GameMode;
   survivalSurvived: number;
-  submittedEntryId?: string | null;
 }) {
   const cto = getCTOTitle(survived, k8sBlames, squadCalls, gameOverInfo?.killStat ?? null, stats, won);
   const timestamp = new Date().toISOString().replace("T", " ").split(".")[0];
@@ -930,7 +912,7 @@ function ReportScreen({
           </>
         ) : (
           <>
-            {/* Loss hero: avatar + name + title (mirrors win layout) */}
+            {/* Loss hero: avatar + name + title */}
             <div className="flex flex-col items-center gap-3 py-3">
               <img src={avatarImage} alt="" className="w-20 h-20 rounded-lg border border-[var(--red)]/40 bg-[var(--btn)] shadow-lg" style={{ imageRendering: "pixelated" }} />
               <div className="text-center">
@@ -943,11 +925,10 @@ function ReportScreen({
 
             <div className="border-t border-[var(--red)]/15" />
 
-            {/* TERMINATED headline */}
             {gameOverInfo && gameMode === "survival" ? (
               <div className="text-center py-2">
-                <div className="text-[var(--text-dim)] text-[10px] tracking-widest mb-1">SURVIVAL MODE</div>
-                <h2 className="text-4xl font-bold text-[var(--orange)] tracking-tight">Incidents Survived: {survivalSurvived}</h2>
+                <h2 className="text-4xl font-bold text-[var(--orange)] tracking-tight">{survivalSurvived}</h2>
+                <p className="text-[var(--text-dim)] text-xs mt-1">incidents survived</p>
                 <p className="text-[var(--text-dim)] text-xs mt-2 italic">{gameOverInfo.flavor}</p>
               </div>
             ) : gameOverInfo ? (
@@ -963,10 +944,12 @@ function ReportScreen({
 
         {/* Stats grid */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
-          <div>
-            <div className="text-[var(--text-dim)] text-[10px] mb-0.5">INCIDENTS SURVIVED</div>
-            <div className="text-[var(--green)]">{survived}<span className="text-[var(--text-dim)] text-xs">/{total}</span></div>
-          </div>
+          {gameMode !== "survival" && (
+            <div>
+              <div className="text-[var(--text-dim)] text-[10px] mb-0.5">INCIDENTS SURVIVED</div>
+              <div className="text-[var(--green)]">{survived}<span className="text-[var(--text-dim)] text-xs">/{total}</span></div>
+            </div>
+          )}
           {!won && gameOverInfo && (
             <div>
               <div className="text-[var(--text-dim)] text-[10px] mb-0.5">CAUSE OF DEATH</div>
@@ -995,22 +978,22 @@ function ReportScreen({
               {fridayDeploys >= 1 && <span className="text-[var(--text-dim)] ml-1">(brave or foolish)</span>}
             </div>
           </div>
-          <div>
-            <div className="text-[var(--text-dim)] text-[10px] mb-0.5">KUBERNETES BLAMED</div>
-            <div className="text-[var(--cyan)] text-xs">
-              {k8sBlames}x
-              {k8sBlames === 0 && <span className="text-[var(--text-dim)] ml-1">(impressive restraint)</span>}
-              {k8sBlames >= 2 && <span className="text-[var(--text-dim)] ml-1">(it&apos;s always Kubernetes)</span>}
-            </div>
-          </div>
-          <div>
-            <div className="text-[var(--text-dim)] text-[10px] mb-0.5">SKOPJE SQUAD CALLED</div>
-            <div className="text-[var(--cyan)] text-xs">
-              {squadCalls}x
-              {squadCalls === 0 && <span className="text-[var(--text-dim)] ml-1">(lone wolf)</span>}
-              {squadCalls >= 3 && <span className="text-[var(--text-dim)] ml-1">(they sent an invoice)</span>}
-            </div>
-          </div>
+        </div>
+
+        {/* Fun stats — compact single lines */}
+        <div className="flex flex-col gap-1 text-xs text-[var(--text-dim)]">
+          <span>
+            Kubernetes blamed{" "}
+            <span className="text-[var(--cyan)]">{k8sBlames}x</span>
+            {k8sBlames === 0 && " (impressive restraint)"}
+            {k8sBlames >= 2 && " (it's always Kubernetes)"}
+          </span>
+          <span>
+            Skopje Squad called{" "}
+            <span className="text-[var(--cyan)]">{squadCalls}x</span>
+            {squadCalls === 0 && " (lone wolf)"}
+            {squadCalls >= 3 && " (they sent an invoice)"}
+          </span>
         </div>
 
         <div className="border-t border-[var(--card-border)]" />
@@ -1050,17 +1033,6 @@ function ReportScreen({
           </>
         )}
 
-        {/* Global leaderboard (survival mode only) */}
-        {gameMode === "survival" && (
-          <>
-            <div className="border-t border-[var(--card-border)]" />
-            <div>
-              <div className="text-[var(--text-dim)] text-[10px] tracking-widest mb-2">GLOBAL LEADERBOARD</div>
-              <LeaderboardDisplay highlightId={submittedEntryId} />
-            </div>
-          </>
-        )}
-
         <div className="border-t border-[var(--card-border)]" />
 
         {/* Replay buttons */}
@@ -1080,6 +1052,17 @@ function ReportScreen({
             [ NEW CTO ]
           </button>
         </div>
+
+        {/* Leaderboard button (survival mode only) */}
+        {gameMode === "survival" && (
+          <button
+            onClick={onViewLeaderboard}
+            className="w-full bg-[var(--btn)] border border-[var(--yellow)]/30 text-[var(--yellow)] px-4 py-2 rounded-md
+                       hover:bg-[var(--yellow)]/10 hover:border-[var(--yellow)]/50 transition-all cursor-pointer text-xs flex items-center justify-center gap-1.5"
+          >
+            🏆 View Leaderboard
+          </button>
+        )}
 
         {/* LinkedIn share */}
         <button
@@ -1132,7 +1115,7 @@ function ReportScreen({
 
 // ─── Leaderboard Components ───────────────────────────────────────────
 
-function LeaderboardDisplay({ highlightId }: { highlightId?: string | null }) {
+function LeaderboardDisplay({ highlightId, showAll = false }: { highlightId?: string | null; showAll?: boolean }) {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -1175,7 +1158,7 @@ function LeaderboardDisplay({ highlightId }: { highlightId?: string | null }) {
     );
   }
 
-  const displayed = showFull ? entries : entries.slice(0, 10);
+  const displayed = (showAll || showFull) ? entries : entries.slice(0, 10);
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -1224,7 +1207,7 @@ function LeaderboardDisplay({ highlightId }: { highlightId?: string | null }) {
           </div>
         );
       })}
-      {!showFull && entries.length > 10 && (
+      {!showAll && !showFull && entries.length > 10 && (
         <button
           onClick={() => setShowFull(true)}
           className="text-[var(--cyan)] text-[10px] text-center hover:underline cursor-pointer mt-0.5"
@@ -1284,6 +1267,29 @@ function LeaderboardOptInScreen({
         >
           No thanks
         </button>
+      </div>
+    </div>
+  );
+}
+
+function LeaderboardScreen({ highlightId, onBack }: { highlightId?: string | null; onBack: () => void }) {
+  return (
+    <div className="animate-fade-in">
+      <div className="border-b border-[var(--card-border)] px-4 py-2.5 flex items-center">
+        <button
+          onClick={onBack}
+          className="text-[var(--cyan)] text-xs hover:underline cursor-pointer flex items-center gap-1"
+        >
+          ← Back to Report
+        </button>
+        <span className="text-[var(--text-dim)] text-[10px] tracking-widest ml-auto">GLOBAL LEADERBOARD</span>
+      </div>
+      <div className="p-4 flex flex-col gap-3">
+        <div className="text-center py-1">
+          <h2 className="text-lg font-bold text-[var(--text-bright)]">🏆 Survival Mode</h2>
+          <p className="text-[var(--text-dim)] text-xs mt-0.5">Global top 50</p>
+        </div>
+        <LeaderboardDisplay highlightId={highlightId} showAll />
       </div>
     </div>
   );
@@ -1552,9 +1558,14 @@ export default function Home() {
               fridayDeploys={fridayDeploys}
               onRestart={restart}
               onNewCTO={newCTO}
+              onViewLeaderboard={() => setPhase("leaderboard-view")}
               gameMode={gameMode}
               survivalSurvived={survivalSurvived}
-              submittedEntryId={submittedEntryId}
+            />
+          ) : phase === "leaderboard-view" ? (
+            <LeaderboardScreen
+              highlightId={submittedEntryId}
+              onBack={() => setPhase("report")}
             />
           ) : currentIncident ? (
             <IncidentCard
