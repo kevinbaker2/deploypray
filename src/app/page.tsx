@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { incidents, type Incident, type Choice } from "./incidents";
 import squadData from "./squad-comments.json";
 import PixelBackground from "./PixelBackground";
+import { supabase } from "../lib/supabase";
 
 interface Stats {
   uptime: number;
@@ -138,7 +139,16 @@ const SCENARIOS: Scenario[] = [
   },
 ];
 
-type GamePhase = "profile" | "intro" | "slack" | "playing" | "end-narrative" | "report";
+interface LeaderboardEntry {
+  id: string;
+  player_name: string;
+  startup_name: string;
+  avatar: string;
+  incidents_survived: number;
+  created_at: string;
+}
+
+type GamePhase = "profile" | "intro" | "slack" | "playing" | "end-narrative" | "leaderboard-optin" | "report";
 type GameMode = "quick" | "survival";
 
 function shuffle<T>(arr: T[]): T[] {
@@ -313,6 +323,7 @@ function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: 
   const [startup, setStartup] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [gameMode, setGameMode] = useState<GameMode>("quick");
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   const canContinue = name.trim().length > 0 && selectedAvatar !== null;
 
@@ -401,6 +412,23 @@ function CTOProfileScreen({ onComplete }: { onComplete: (name: string, startup: 
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Leaderboard preview */}
+        <div>
+          <button
+            onClick={() => setShowLeaderboard((v) => !v)}
+            className="w-full border border-[var(--btn-border)] text-[var(--text-dim)] px-4 py-2 rounded-md
+                       hover:bg-[var(--btn-hover)] hover:text-[var(--text)] transition-all cursor-pointer text-xs flex items-center justify-center gap-1.5"
+          >
+            🏆 {showLeaderboard ? "Hide Leaderboard" : "View Global Leaderboard"}
+          </button>
+          {showLeaderboard && (
+            <div className="mt-2">
+              <div className="text-[var(--text-dim)] text-[10px] tracking-widest mb-2">SURVIVAL MODE — TOP 10</div>
+              <LeaderboardDisplay />
+            </div>
+          )}
         </div>
 
         <button
@@ -840,6 +868,7 @@ function ReportScreen({
   onNewCTO,
   gameMode,
   survivalSurvived,
+  submittedEntryId,
 }: {
   won: boolean;
   gameOverInfo: GameOverInfo | null;
@@ -856,6 +885,7 @@ function ReportScreen({
   onNewCTO: () => void;
   gameMode: GameMode;
   survivalSurvived: number;
+  submittedEntryId?: string | null;
 }) {
   const cto = getCTOTitle(survived, k8sBlames, squadCalls, gameOverInfo?.killStat ?? null, stats, won);
   const timestamp = new Date().toISOString().replace("T", " ").split(".")[0];
@@ -1020,6 +1050,17 @@ function ReportScreen({
           </>
         )}
 
+        {/* Global leaderboard (survival mode only) */}
+        {gameMode === "survival" && (
+          <>
+            <div className="border-t border-[var(--card-border)]" />
+            <div>
+              <div className="text-[var(--text-dim)] text-[10px] tracking-widest mb-2">GLOBAL LEADERBOARD</div>
+              <LeaderboardDisplay highlightId={submittedEntryId} />
+            </div>
+          </>
+        )}
+
         <div className="border-t border-[var(--card-border)]" />
 
         {/* Replay buttons */}
@@ -1089,6 +1130,165 @@ function ReportScreen({
   );
 }
 
+// ─── Leaderboard Components ───────────────────────────────────────────
+
+function LeaderboardDisplay({ highlightId }: { highlightId?: string | null }) {
+  const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showFull, setShowFull] = useState(false);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const { data, error } = await supabase
+          .from("leaderboard")
+          .select("*")
+          .order("incidents_survived", { ascending: false })
+          .limit(50);
+        if (error) throw error;
+        setEntries(data ?? []);
+      } catch {
+        setError("Could not load leaderboard.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center text-[var(--text-dim)] text-xs py-4 animate-pulse">
+        Loading leaderboard...
+      </div>
+    );
+  }
+  if (error) {
+    return <div className="text-center text-[var(--red)] text-xs py-2">{error}</div>;
+  }
+  if (entries.length === 0) {
+    return (
+      <div className="text-center text-[var(--text-dim)] text-xs py-3">
+        No scores yet. Be the first!
+      </div>
+    );
+  }
+
+  const displayed = showFull ? entries : entries.slice(0, 10);
+
+  return (
+    <div className="flex flex-col gap-1.5">
+      {displayed.map((entry, i) => {
+        const rank = i + 1;
+        const isHighlighted = highlightId != null && entry.id === highlightId;
+        return (
+          <div
+            key={entry.id}
+            className={`flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs ${
+              isHighlighted
+                ? "bg-[var(--yellow)]/10 border border-[var(--yellow)]/50"
+                : "bg-[var(--btn)] border border-[var(--btn-border)]"
+            }`}
+          >
+            <span
+              className={`w-5 text-center font-bold shrink-0 ${
+                rank === 1 ? "text-[#FFD700]" : rank === 2 ? "text-[#C0C0C0]" : rank === 3 ? "text-[#CD7F32]" : "text-[var(--text-dim)]"
+              }`}
+            >
+              {rank}
+            </span>
+            <img
+              src={entry.avatar}
+              alt=""
+              className="w-5 h-5 rounded shrink-0"
+              style={{ imageRendering: "pixelated" }}
+            />
+            <span
+              className={`flex-1 truncate font-medium ${
+                isHighlighted ? "text-[var(--yellow)]" : "text-[var(--text-bright)]"
+              }`}
+            >
+              {entry.player_name}
+            </span>
+            <span className="text-[var(--text-dim)] text-[10px] truncate max-w-[80px] shrink-0">
+              {entry.startup_name}
+            </span>
+            <span
+              className={`font-bold shrink-0 ${
+                isHighlighted ? "text-[var(--yellow)]" : "text-[var(--orange)]"
+              }`}
+            >
+              {entry.incidents_survived}
+            </span>
+          </div>
+        );
+      })}
+      {!showFull && entries.length > 10 && (
+        <button
+          onClick={() => setShowFull(true)}
+          className="text-[var(--cyan)] text-[10px] text-center hover:underline cursor-pointer mt-0.5"
+        >
+          View Full Leaderboard (top 50)
+        </button>
+      )}
+    </div>
+  );
+}
+
+function LeaderboardOptInScreen({
+  survivalSurvived,
+  playerName,
+  startupName,
+  submitting,
+  onOptIn,
+  onSkip,
+}: {
+  survivalSurvived: number;
+  playerName: string;
+  startupName: string;
+  submitting: boolean;
+  onOptIn: () => void;
+  onSkip: () => void;
+}) {
+  return (
+    <div className="animate-fade-in flex flex-col items-center justify-center p-6 gap-6 min-h-[300px]">
+      <div className="text-center">
+        <div className="text-5xl mb-3">🏆</div>
+        <h2 className="text-lg font-bold text-[var(--text-bright)]">
+          You survived {survivalSurvived} incidents.
+        </h2>
+        <p className="text-[var(--text-dim)] text-xs mt-1.5">
+          Add your score to the global leaderboard?
+        </p>
+        <div className="mt-2 text-xs text-[var(--text)]">
+          Playing as:{" "}
+          <span className="text-[var(--text-bright)]">{playerName}</span> from{" "}
+          <span className="text-[var(--text-bright)]">{startupName}</span>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 w-full max-w-[280px]">
+        <button
+          onClick={onOptIn}
+          disabled={submitting}
+          className="w-full bg-[var(--yellow)]/10 border border-[var(--yellow)]/40 text-[var(--yellow)] px-4 py-2.5 rounded-md
+                     hover:bg-[var(--yellow)]/20 transition-all cursor-pointer text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {submitting ? "Submitting..." : "Yes, add my score"}
+        </button>
+        <button
+          onClick={onSkip}
+          disabled={submitting}
+          className="w-full bg-[var(--btn)] border border-[var(--btn-border)] text-[var(--text-dim)] px-4 py-2.5 rounded-md
+                     hover:bg-[var(--btn-hover)] transition-all cursor-pointer text-sm disabled:opacity-50"
+        >
+          No thanks
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main ────────────────────────────────────────────────────────────
 
 export default function Home() {
@@ -1116,6 +1316,8 @@ export default function Home() {
   const [k8sBlames, setK8sBlames] = useState(0);
   const [fridayDeploys, setFridayDeploys] = useState(0);
   const [survivalSurvived, setSurvivalSurvived] = useState(0);
+  const [submittedEntryId, setSubmittedEntryId] = useState<string | null>(null);
+  const [leaderboardSubmitting, setLeaderboardSubmitting] = useState(false);
 
   const currentIncident = deck[index] ?? null;
 
@@ -1214,6 +1416,7 @@ export default function Home() {
     setK8sBlames(0);
     setFridayDeploys(0);
     setSurvivalSurvived(0);
+    setSubmittedEntryId(null);
     setScenario(SCENARIOS[Math.floor(Math.random() * SCENARIOS.length)]);
     setPhase("intro");
   }, [gameMode]);
@@ -1231,6 +1434,7 @@ export default function Home() {
     setK8sBlames(0);
     setFridayDeploys(0);
     setSurvivalSurvived(0);
+    setSubmittedEntryId(null);
     setGameMode("quick");
     setPlayerName("");
     setStartupName("");
@@ -1247,6 +1451,36 @@ export default function Home() {
     const deckSize = mode === "quick" ? 15 : 50;
     setDeck(shuffle(incidents).slice(0, deckSize));
     setPhase("intro");
+  }, []);
+
+  const handleLeaderboardOptIn = useCallback(async () => {
+    if (survivalSurvived > 0) {
+      setLeaderboardSubmitting(true);
+      try {
+        const { data, error } = await supabase
+          .from("leaderboard")
+          .insert({
+            player_name: playerName,
+            startup_name: startupName,
+            avatar: avatarImage,
+            incidents_survived: survivalSurvived,
+          })
+          .select("id")
+          .single();
+        if (!error && data) {
+          setSubmittedEntryId(data.id);
+        }
+      } catch {
+        // silently fail — game continues regardless
+      } finally {
+        setLeaderboardSubmitting(false);
+      }
+    }
+    setPhase("report");
+  }, [playerName, startupName, avatarImage, survivalSurvived]);
+
+  const handleLeaderboardSkip = useCallback(() => {
+    setPhase("report");
   }, []);
 
   const isGameActive = phase === "playing" && !gameOverInfo && !won;
@@ -1292,7 +1526,16 @@ export default function Home() {
             <EndNarrativeScreen
               won={won}
               endingLines={won ? scenario.winEnding(playerName, startupName) : scenario.loseEnding(playerName, startupName)}
-              onContinue={() => setPhase("report")}
+              onContinue={() => gameMode === "survival" ? setPhase("leaderboard-optin") : setPhase("report")}
+            />
+          ) : phase === "leaderboard-optin" ? (
+            <LeaderboardOptInScreen
+              survivalSurvived={survivalSurvived}
+              playerName={playerName}
+              startupName={startupName}
+              submitting={leaderboardSubmitting}
+              onOptIn={handleLeaderboardOptIn}
+              onSkip={handleLeaderboardSkip}
             />
           ) : phase === "report" ? (
             <ReportScreen
@@ -1311,6 +1554,7 @@ export default function Home() {
               onNewCTO={newCTO}
               gameMode={gameMode}
               survivalSurvived={survivalSurvived}
+              submittedEntryId={submittedEntryId}
             />
           ) : currentIncident ? (
             <IncidentCard
