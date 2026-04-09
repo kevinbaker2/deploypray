@@ -1164,40 +1164,36 @@ function LeaderboardDisplay({ highlightId, showAll = false }: { highlightId?: st
       {displayed.map((entry, i) => {
         const rank = i + 1;
         const isHighlighted = highlightId != null && entry.id === highlightId;
+        const rankColor = rank === 1 ? "text-[#FFD700]" : rank === 2 ? "text-[#C0C0C0]" : rank === 3 ? "text-[#CD7F32]" : "text-[var(--text-dim)]";
         return (
           <div
             key={entry.id}
-            className={`flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs ${
+            className={`flex items-center gap-2.5 px-2.5 py-2 rounded-md ${
               isHighlighted
                 ? "bg-[var(--yellow)]/10 border border-[var(--yellow)]/50"
                 : "bg-[var(--btn)] border border-[var(--btn-border)]"
             }`}
           >
-            <span
-              className={`w-5 text-center font-bold shrink-0 ${
-                rank === 1 ? "text-[#FFD700]" : rank === 2 ? "text-[#C0C0C0]" : rank === 3 ? "text-[#CD7F32]" : "text-[var(--text-dim)]"
-              }`}
-            >
-              {rank}
-            </span>
+            {/* Rank + avatar */}
+            <span className={`w-5 text-center text-xs font-bold shrink-0 ${rankColor}`}>{rank}</span>
             <img
               src={entry.avatar}
               alt=""
-              className="w-5 h-5 rounded shrink-0"
+              className="w-6 h-6 rounded shrink-0"
               style={{ imageRendering: "pixelated" }}
             />
+            {/* Name + company — takes all remaining space, wraps naturally */}
+            <div className="flex-1 min-w-0">
+              <div className={`text-xs font-semibold leading-tight ${isHighlighted ? "text-[var(--yellow)]" : "text-[var(--text-bright)]"}`}>
+                {entry.player_name}
+              </div>
+              <div className="text-[10px] text-[var(--text-dim)] leading-tight mt-0.5">
+                {entry.startup_name}
+              </div>
+            </div>
+            {/* Score — prominent, fixed width, right-aligned */}
             <span
-              className={`flex-1 truncate font-medium ${
-                isHighlighted ? "text-[var(--yellow)]" : "text-[var(--text-bright)]"
-              }`}
-            >
-              {entry.player_name}
-            </span>
-            <span className="text-[var(--text-dim)] text-[10px] truncate max-w-[80px] shrink-0">
-              {entry.startup_name}
-            </span>
-            <span
-              className={`font-bold shrink-0 ${
+              className={`text-base font-bold shrink-0 tabular-nums ${
                 isHighlighted ? "text-[var(--yellow)]" : "text-[var(--orange)]"
               }`}
             >
