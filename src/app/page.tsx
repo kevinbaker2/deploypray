@@ -871,6 +871,7 @@ function ReportScreen({
 }) {
   const cto = getCTOTitle(survived, k8sBlames, squadCalls, gameOverInfo?.killStat ?? null, stats, won);
   const timestamp = new Date().toISOString().replace("T", " ").split(".")[0];
+  const [linkedInCopied, setLinkedInCopied] = useState(false);
 
   const killStatLabels: Record<KillStat, string> = {
     uptime: "UPTIME -> 0%",
@@ -1064,27 +1065,37 @@ function ReportScreen({
         )}
 
         {/* LinkedIn share */}
-        <button
-          onClick={() => {
-            const gameUrl = "https://deploypray.personalprogrammer.nl/";
-            const killStatNames: Record<KillStat, string> = {
-              uptime: "Uptime",
-              morale: "Morale",
-              reputation: "Reputation",
-              cloud_cost: "Cloud Cost",
-            };
-            const text = won
-              ? `I just survived all ${total} incidents as CTO of ${startupName} in Deploy & Pray 🙏\n\nFinal stats:\n🟢 Uptime: ${stats.uptime}%\n😤 Morale: ${stats.morale}%\n💸 Cloud Cost: ${stats.cloud_cost}%\n⭐ Reputation: ${stats.reputation}%\n\nMy CTO title: ${cto.title}\n\nCan you do better? Play here: ${gameUrl}\n\n#CTO #DevOps #StartupLife #DeployAndPray`
-              : `I just failed as CTO of ${startupName} in Deploy & Pray 🙏\n\nSurvived ${survived} incidents before ${gameOverInfo ? killStatNames[gameOverInfo.killStat] : "everything"} collapsed.\n\nMy CTO title: ${cto.title}\n\nThink you can survive longer? Play here: ${gameUrl}\n\n#CTO #DevOps #StartupLife #DeployAndPray`;
-            const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(gameUrl)}&summary=${encodeURIComponent(text)}`;
-            window.open(linkedInUrl, "_blank", "noopener,noreferrer");
-          }}
-          className="w-full bg-[#0A66C2] hover:bg-[#004182] text-white px-4 py-2.5 rounded-md
-                     transition-colors cursor-pointer text-xs font-semibold flex items-center justify-center gap-2"
-        >
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          Share on LinkedIn
-        </button>
+        <div className="flex flex-col gap-1.5">
+          <button
+            onClick={() => {
+              const gameUrl = "https://deploypray.personalprogrammer.nl/";
+              const killStatNames: Record<KillStat, string> = {
+                uptime: "Uptime",
+                morale: "Morale",
+                reputation: "Reputation",
+                cloud_cost: "Cloud Cost",
+              };
+              const text = gameMode === "survival"
+                ? `I survived ${survivalSurvived} incidents in Survival Mode in Deploy & Pray 🙏\n\nMy CTO title: ${cto.title}\n\nThe leaderboard record is waiting to be broken. Play here: ${gameUrl}\n\n#CTO #DevOps #StartupLife #DeployAndPray`
+                : won
+                ? `I just survived as CTO of ${startupName} in Deploy & Pray 🙏\n\nFinal stats:\nUptime: ${stats.uptime}%\nMorale: ${stats.morale}%\nCloud Cost: ${stats.cloud_cost}%\nReputation: ${stats.reputation}%\n\nMy CTO title: ${cto.title}\n\nCan you do better? Play here: ${gameUrl}\n\n#CTO #DevOps #StartupLife #DeployAndPray`
+                : `I just failed as CTO of ${startupName} in Deploy & Pray 🙏\n\nSurvived ${survived} incidents before ${gameOverInfo ? killStatNames[gameOverInfo.killStat] : "everything"} collapsed.\n\nMy CTO title: ${cto.title}\n\nThink you can survive longer? Play here: ${gameUrl}\n\n#CTO #DevOps #StartupLife #DeployAndPray`;
+              navigator.clipboard.writeText(text).catch(() => {});
+              window.open("https://www.linkedin.com/feed/", "_blank", "noopener,noreferrer");
+              setLinkedInCopied(true);
+            }}
+            className="w-full bg-[#0A66C2] hover:bg-[#004182] text-white px-4 py-2.5 rounded-md
+                       transition-colors cursor-pointer text-xs font-semibold flex items-center justify-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Share on LinkedIn
+          </button>
+          {linkedInCopied && (
+            <p className="text-center text-[10px] text-[var(--green)]">
+              ✓ Text copied — just paste it into your LinkedIn post
+            </p>
+          )}
+        </div>
 
         {/* Skopje Squad CTA */}
         <div className="bg-[#1a2332] border border-[var(--cyan)]/20 rounded-lg px-4 py-4 text-center">
